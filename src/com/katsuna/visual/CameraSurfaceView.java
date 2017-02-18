@@ -339,8 +339,14 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
     public void surfaceChanged(final SurfaceHolder holder, final int format,
                                final int width, final int height) {
 
+
         if (mHolder.getSurface() == null) {
             // preview surface does not exist
+            return;
+        }
+
+        if (mCamera == null) {
+            // camera not initialized
             return;
         }
 

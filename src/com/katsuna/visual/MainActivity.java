@@ -1,6 +1,9 @@
 package com.katsuna.visual;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,7 +15,11 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.hardware.Camera.Size;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -22,6 +29,10 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.katsuna.visual.messages.MeasurementStepMessage;
 import com.katsuna.visual.messages.MessageHUB;
 import com.katsuna.visual.messages.MessageListener;
@@ -41,6 +52,9 @@ public class MainActivity extends Activity implements MessageListener {
     private CameraSurfaceView _mySurfaceView;
     Camera _cam;
 
+    private static final int PERMISSION_ALL = 1;
+    String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+
     private final static DecimalFormat _decimalFormater = new DecimalFormat(
             "0.0");
 
@@ -54,6 +68,11 @@ public class MainActivity extends Activity implements MessageListener {
     TextView _currentDistanceView;
     Button _calibrateButton;
     ArrayList<C_image> c_images;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     /**
      * Abusing the media controls to create a remote control
@@ -69,6 +88,12 @@ public class MainActivity extends Activity implements MessageListener {
 
     @Override
     public void onCreate(final Bundle savedInstanceState) {
+
+
+        if (!hasPermissions(this, PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
+
 
         rotate = new int[8];
         rotate[0] = 225;
@@ -329,11 +354,6 @@ public class MainActivity extends Activity implements MessageListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.measurement_activity);
 
-        _mySurfaceView = (CameraSurfaceView) findViewById(R.id.surface_camera);
-
-        _mySurfaceView.setZOrderOnTop(true);    // necessary
-        SurfaceHolder sfhTrackHolder = _mySurfaceView.getHolder();
-        sfhTrackHolder.setFormat(PixelFormat.TRANSPARENT);
 
         RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams(
                 (int) (0.95 * this.getResources().getDisplayMetrics().widthPixels),
@@ -341,6 +361,14 @@ public class MainActivity extends Activity implements MessageListener {
 
         layout.setMargins(0, (int) (0.05 * this.getResources()
                 .getDisplayMetrics().heightPixels), 0, 0);
+
+
+        _mySurfaceView = (CameraSurfaceView) findViewById(R.id.surface_camera);
+
+        _mySurfaceView.setZOrderOnTop(true);    // necessary
+        SurfaceHolder sfhTrackHolder = _mySurfaceView.getHolder();
+        sfhTrackHolder.setFormat(PixelFormat.TRANSPARENT);
+
 
         //	_mySurfaceView.setLayoutParams(layout);
         _currentDistanceView = (TextView) findViewById(R.id.currentDistance);
@@ -353,6 +381,9 @@ public class MainActivity extends Activity implements MessageListener {
             image.setImageBitmap(c_images.get(imageCounter).getBitMap());
             imageCounter++;
         }
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -367,11 +398,61 @@ public class MainActivity extends Activity implements MessageListener {
     protected void onResume() {
         super.onResume();
 
-        MessageHUB.get().registerListener(this);
+
         // _audioManager.registerMediaButtonEventReceiver(_headSetButtonReceiver);
 
         // 1 for front cam. No front cam ? Not my fault!
         //releaseCameraAndPreview();
+
+
+//        if (!hasPermissions(this, PERMISSIONS)) {
+//            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+//        }
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            cameraSetup();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        MessageHUB.get().unregisterListener(this);
+
+        // _audioManager
+        // .unregisterMediaButtonEventReceiver(_headSetButtonReceiver);
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            resetCam();
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+
+        MessageHUB.get().unregisterListener(this);
+
+        // _audioManager
+        // .unregisterMediaButtonEventReceiver(_headSetButtonReceiver);
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            resetCam();
+        }
+    }
+
+    public void cameraSetup()
+    {
+        MessageHUB.get().registerListener(this);
         _cam = Camera.open(1);
         Camera.Parameters param = _cam.getParameters();
 
@@ -404,26 +485,12 @@ public class MainActivity extends Activity implements MessageListener {
         _cam.setParameters(param);
 
         _mySurfaceView.setCamera(_cam);
+
+
+        pressedCalibrate();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        MessageHUB.get().unregisterListener(this);
-
-        // _audioManager
-        // .unregisterMediaButtonEventReceiver(_headSetButtonReceiver);
-
-        resetCam();
-    }
-
-    /**
-     * Sets the current eye distance to the calibration point.
-     *
-     * @param v
-     */
-    public void pressedCalibrate(final View v) {
+    public void pressedCalibrate() {
 
         if (!_mySurfaceView.isCalibrated()) {
 
@@ -432,7 +499,7 @@ public class MainActivity extends Activity implements MessageListener {
         }
     }
 
-    public void pressedReset(final View v) {
+    public void pressedReset() {
 
         if (_mySurfaceView.isCalibrated()) {
 
@@ -581,7 +648,8 @@ public class MainActivity extends Activity implements MessageListener {
     }
 
 
-    public static Bitmap changeBitmapContrastBrightness(Bitmap bmp, float contrast, float brightness) {
+    public static Bitmap changeBitmapContrastBrightness(Bitmap bmp, float contrast,
+                                                        float brightness) {
         ColorMatrix cm = new ColorMatrix(new float[]
                 {
                         contrast, 0, 0, 0, brightness,
@@ -601,7 +669,6 @@ public class MainActivity extends Activity implements MessageListener {
 
         return ret;
     }
-
 
 
     public void updateUI(final MeasurementStepMessage message) {
@@ -626,7 +693,33 @@ public class MainActivity extends Activity implements MessageListener {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_ALL: {
+                // If request is cancelled, the result arrays are empty.
+                System.out.println("Perm length: " + grantResults.length);
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    cameraSetup();
+
+                } else {
+
+                    System.out.println("Permissions problem!");
+                    finish();
+                }
+                return;
+            }
+
+
+        }
+    }
+
+
+    @Override
     public void onMessage(final int messageID, final Object message) {
+
 
         switch (messageID) {
 
@@ -643,5 +736,76 @@ public class MainActivity extends Activity implements MessageListener {
                 break;
         }
 
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            cameraSetup();
+        }
+
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            cameraSetup();
+        }
+
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
     }
 }
