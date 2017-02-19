@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.katsuna.visual.measurement.Point;
 import com.katsuna.visual.messages.MeasurementStepMessage;
@@ -85,6 +86,9 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
         mHolder = getHolder();
         mHolder.addCallback(this);
     }
+
+
+
 
     public void setCamera(final Camera camera) {
         mCamera = camera;
@@ -328,6 +332,8 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
             this.setWillNotDraw(false);
         }
     }
+
+
 
     @Override
     public void surfaceDestroyed(final SurfaceHolder holder) {

@@ -21,8 +21,10 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -60,6 +62,7 @@ public class MainActivity extends Activity implements MessageListener {
 
     private float _currentDevicePosition;
     int[] rotate;
+    ViewGroup insertPoint;
     int errors = 0;
     private int _cameraHeight;
     private int _cameraWidth;
@@ -413,6 +416,9 @@ public class MainActivity extends Activity implements MessageListener {
                 Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
 
+
+
+
             cameraSetup();
         }
     }
@@ -430,13 +436,13 @@ public class MainActivity extends Activity implements MessageListener {
                 Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
             resetCam();
+
         }
     }
 
     @Override
     public void onDestroy()
     {
-        super.onDestroy();
 
         MessageHUB.get().unregisterListener(this);
 
@@ -448,13 +454,29 @@ public class MainActivity extends Activity implements MessageListener {
                 == PackageManager.PERMISSION_GRANTED) {
             resetCam();
         }
+        super.onDestroy();
+
+
+    }
+
+    private void initializeCameraView(){
+
+        RelativeLayout preview = (RelativeLayout) findViewById(R.id.layout);
+        //removes the problem with the camera freezing onResume
+        if(_mySurfaceView != null) {
+            preview.removeView(_mySurfaceView);
+        }
+        preview.addView(_mySurfaceView);
     }
 
     public void cameraSetup()
     {
         MessageHUB.get().registerListener(this);
+        initializeCameraView();
         _cam = Camera.open(1);
+
         Camera.Parameters param = _cam.getParameters();
+
 
         // Find the best suitable camera picture size for your device. Competent
         // research has shown that a smaller size gets better results up to a
@@ -484,7 +506,9 @@ public class MainActivity extends Activity implements MessageListener {
         param.setPreviewSize(_cameraWidth, _cameraHeight);
         _cam.setParameters(param);
 
+
         _mySurfaceView.setCamera(_cam);
+
 
 
         pressedCalibrate();
@@ -686,10 +710,10 @@ public class MainActivity extends Activity implements MessageListener {
 
     private void resetCam() {
         _mySurfaceView.reset();
-
         _cam.stopPreview();
         _cam.setPreviewCallback(null);
         _cam.release();
+        _cam = null;
     }
 
     @Override
