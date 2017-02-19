@@ -1,4 +1,4 @@
-package com.katsuna.visual;
+package com.katsuna.visual.core;
 
 import android.Manifest;
 import android.app.Activity;
@@ -21,7 +21,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +34,9 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.katsuna.visual.measurement.Acuity;
+import com.katsuna.visual.measurement.C_image;
+import com.katsuna.visual.R;
 import com.katsuna.visual.messages.MeasurementStepMessage;
 import com.katsuna.visual.messages.MessageHUB;
 import com.katsuna.visual.messages.MessageListener;
@@ -110,32 +112,44 @@ public class MainActivity extends Activity implements MessageListener {
         Random randomGenerator = new Random();
         c_images = new ArrayList<>();
 
+
+
+
+        Acuity acuity = new Acuity();
+
+        for (int n = -3; n <= 10; n++) {
+            double logMAR = acuity.round(0.1 * n);
+            // limit to two digits
+            double acuityD = acuity.round(Math.pow(10, -logMAR));
+            double finalSizeInMM = acuity.round(acuity.getSizeInMM(Acuity.distance, logMAR));
+            double finalSizeInPx = acuity.round(acuity.getHeightInPx(finalSizeInMM));
+            // Get minimum suggested font size
+            int finalMinimumFontSize = acuity.getMinimumSuggestedFontSize(finalSizeInPx);
+
+            // Due to device screen sizes and resolutions, some of our values are so small
+            // that there are not enough pixels for the critical gap. Check for it here
+            if (!acuity.checkIfPossibleSize(finalSizeInMM, finalSizeInPx)) {
+                System.out.print("logMAR is " + logMAR + ", acuity is " + acuity +
+                        ", drawable height = " + finalSizeInMM + " mm, "
+                        + "NOT POSSIBLE!" + System.lineSeparator());
+            } else {
+                System.out.print("logMAR is " + logMAR + ", acuity is " + acuity +
+                        ", drawable height = " + finalSizeInMM + " mm, " + finalSizeInPx
+                        + " px, min fontsize = " + finalMinimumFontSize
+                        + System.lineSeparator());
+            }
+        }
+
+
+
+
+
+
+
         int rotation = randomGenerator.nextInt(8);
         Bitmap bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
         Bitmap bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
         bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-
-        // 1.  bMapScaled = adjustedContrast(bMapScaled,1);
-        //2. 		bMapScaled = adjustedContrast(bMapScaled,0.6);
-        //3. 		bMapScaled = adjustedContrast(bMapScaled,0.1);
-        // 4 		bMapScaled = adjustedContrast(bMapScaled,-0.31);
-        // 5 		bMapScaled = adjustedContrast(bMapScaled,-0.52);
-        // 6 		bMapScaled = adjustedContrast(bMapScaled,-0.65);
-        // 7 		bMapScaled = adjustedContrast(bMapScaled,-0.74);
-        // 8 		bMapScaled = adjustedContrast(bMapScaled,-0.82);
-// 9  		bMapScaled = adjustedContrast(bMapScaled,-0.89);
-        //10 		bMapScaled = adjustedContrast(bMapScaled,-0.93);
-
-        //10 		bMapScaled = adjustedContrast(bMapScaled,-0.97);
-
-        //10 		bMapScaled = adjustedContrast(bMapScaled,-1.02);
-
-        //10 		bMapScaled = adjustedContrast(bMapScaled,-1.04);
-
-        //10 		bMapScaled = adjustedContrast(bMapScaled,-1.06);
-
-        //10 		bMapScaled = adjustedContrast(bMapScaled,-1.08);
-//11 		bMapScaled = adjustedContrast(bMapScaled,-1.1);
 
 
         C_image c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);

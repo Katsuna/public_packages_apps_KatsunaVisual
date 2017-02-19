@@ -1,4 +1,4 @@
-package com.katsuna.visual;
+package com.katsuna.visual.core;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

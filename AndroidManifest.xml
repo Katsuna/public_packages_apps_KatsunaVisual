@@ -5,7 +5,7 @@
     android:versionName="1.0">
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="19"
         android:targetSdkVersion="24" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.katsuna.visual.MainActivity"
+            android:name="com.katsuna.visual.core.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:label="@string/app_name">

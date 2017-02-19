@@ -1,4 +1,4 @@
-package com.katsuna.visual;
+package com.katsuna.visual.core;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
-import android.view.View;
 
 import com.katsuna.visual.measurement.Point;
 import com.katsuna.visual.messages.MeasurementStepMessage;

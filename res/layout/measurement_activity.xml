@@ -6,11 +6,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:id="@+id/layout"
-    tools:context="com.katsuna.visual.MainActivity"
+    tools:context="com.katsuna.visual.core.MainActivity"
     android:layout_height="match_parent">
 
     <!-- Height + width will be set in the main activity -->
-    <com.katsuna.visual.CameraSurfaceView
+    <com.katsuna.visual.core.CameraSurfaceView
         android:id="@+id/surface_camera"
         android:layout_height="1dip"
         android:layout_width="1dip"

@@ -1,4 +1,4 @@
-package com.katsuna.visual;
+package com.katsuna.visual.measurement;
 
 import android.graphics.Bitmap;
 
