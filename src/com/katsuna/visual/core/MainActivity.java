@@ -732,10 +732,12 @@ public class MainActivity extends Activity implements MessageListener {
 
     private void resetCam() {
         _mySurfaceView.reset();
-        _cam.stopPreview();
-        _cam.setPreviewCallback(null);
-        _cam.release();
-        _cam = null;
+        if(_cam != null) {
+            _cam.stopPreview();
+            _cam.setPreviewCallback(null);
+            _cam.release();
+            _cam = null;
+        }
     }
 
     @Override

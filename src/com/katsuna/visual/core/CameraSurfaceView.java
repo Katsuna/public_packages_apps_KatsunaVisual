@@ -336,8 +336,10 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
 
     @Override
     public void surfaceDestroyed(final SurfaceHolder holder) {
-        mCamera.release();
-        mCamera = null;
+        if(mCamera != null) {
+            mCamera.release();
+            mCamera = null;
+        }
     }
 
     @Override
