@@ -37,8 +37,10 @@
     <color name="green">#00FF00</color>
     <color name="yellow">#FFFF00</color>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Menu Layout -->
+    <string name="menu_fragment_title">Vision Tests</string>
+    <string name="menu_fragment_optical_test_title">Optical acuity test</string>
+    <string name="menu_fragment_contrast_test_title">Contrast sencitivity test</string>
 
 
 </resources>
