@@ -14,30 +14,9 @@
         android:id="@+id/surface_camera"
         android:layout_height="1dip"
         android:layout_width="1dip"
-        android:layout_marginTop="70dip"
+        android:layout_marginTop="0dip"
         android:layout_centerHorizontal="true" />
 
-    <Button
-        android:id="@+id/calibrateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:onClick="pressedCalibrate"
-        android:visibility="invisible"
-        android:text="@string/calibrate"
-        android:background="@drawable/red_button" />
-
-    <Button
-        android:id="@+id/resetButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:onClick="pressedReset"
-        android:visibility="invisible"
-
-        android:text="@string/reset" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -53,190 +32,15 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/currentDistance"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="@string/currentDistance"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Switch
-        android:id="@+id/switch1"
-        android:visibility="invisible"
-
+    <FrameLayout
+        android:id="@+id/main_activity_fragment_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="@string/showMiddlePoint"
-        android:checked="true"
-        android:onClick="onShowMiddlePoint"
-        android:layout_above="@+id/resetButton"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="11dp" />
-
-    <Switch
-        android:id="@+id/switch2"
-        android:visibility="invisible"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="right"
-        android:text="@string/showEyePoints"
-        android:checked="false"
-        android:onClick="onShowEyePoints"
-        android:layout_above="@+id/switch1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentTop="true">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/surface_camera"/>
 
 
-            <ImageView
-                android:id="@+id/upleft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/c_button"
-                android:layout_weight="1"
-                android:rotation="225"
-                android:onClick="pressedC"
-
-
-                />
-
-            <ImageView
-                android:id="@+id/upmiddle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/c_button"
-                android:layout_weight="1"
-                android:rotation="270"
-                android:onClick="pressedC"
-
-
-                />
-
-            <ImageView
-                android:id="@+id/upright"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/c_button"
-                android:layout_weight="1"
-                android:rotation="315"
-                android:onClick="pressedC"
-
-
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <ImageView
-                android:id="@+id/middleleft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/c_button"
-                android:layout_weight="1"
-                android:rotation="180"
-                android:onClick="pressedC"
-
-
-                />
-
-            <ImageView
-                android:id="@+id/c"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/c"
-                android:layout_weight="1"
-                android:onClick="pressedC"
-
-
-                />
-
-            <ImageView
-                android:id="@+id/middleright"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/c_button"
-                android:layout_weight="1"
-                android:onClick="pressedC"
-
-
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-
-            <ImageView
-                android:id="@+id/downleft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/c_button"
-                android:layout_weight="1"
-                android:rotation="135"
-                android:onClick="pressedC"
-
-
-                />
-
-            <ImageView
-                android:id="@+id/downmiddle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/c_button"
-                android:layout_weight="1"
-                android:rotation="90"
-                android:onClick="pressedC"
-
-
-                />
-
-            <ImageView
-                android:id="@+id/downright"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/c_button"
-                android:layout_weight="1"
-                android:rotation="45"
-                android:onClick="pressedC"
-
-
-                />
-
-
-        </LinearLayout>
-    </LinearLayout>
 
 </RelativeLayout>

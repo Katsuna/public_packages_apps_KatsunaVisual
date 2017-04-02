@@ -2,6 +2,8 @@ package com.katsuna.visual.core;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -34,19 +37,22 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.katsuna.visual.BaseActivity;
+import com.katsuna.visual.BaseFragment;
 import com.katsuna.visual.measurement.Acuity;
 import com.katsuna.visual.measurement.C_image;
 import com.katsuna.visual.R;
 import com.katsuna.visual.messages.MeasurementStepMessage;
 import com.katsuna.visual.messages.MessageHUB;
 import com.katsuna.visual.messages.MessageListener;
+import com.katsuna.visual.screens.MenuFragment;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MainActivity extends Activity implements MessageListener {
+public class MainActivity extends BaseActivity implements MessageListener {
 
     public static final String CAM_SIZE_WIDTH = "intent_cam_size_width";
     public static final String CAM_SIZE_HEIGHT = "intent_cam_size_height";
@@ -100,280 +106,302 @@ public class MainActivity extends Activity implements MessageListener {
         }
 
 
-        rotate = new int[8];
-        rotate[0] = 225;
-        rotate[1] = 270;
-        rotate[2] = 315;
-        rotate[3] = 180;
-        rotate[4] = 0;
-        rotate[5] = 135;
-        rotate[6] = 90;
-        rotate[7] = 45;
-        Random randomGenerator = new Random();
-        c_images = new ArrayList<>();
 
-        int rotation;
-        Bitmap bMap;
-        Bitmap bMapScaled;
-        C_image c_image;
-
-
-                Acuity acuity = new Acuity();
-
-        for (int n = 10; n >= -3; n--) {
-            double logMAR = acuity.round(0.1 * n);
-            // limit to two digits
-            double acuityD = acuity.round(Math.pow(10, -logMAR));
-            double finalSizeInMM = acuity.round(acuity.getSizeInMM(Acuity.distance, logMAR));
-            Double finalSizeInPx = acuity.round(acuity.getHeightInPx(finalSizeInMM));
-            // Get minimum suggested font size
-            int finalMinimumFontSize = acuity.getMinimumSuggestedFontSize(finalSizeInPx);
-
-            // Due to device screen sizes and resolutions, some of our values are so small
-            // that there are not enough pixels for the critical gap. Check for it here
-            if (!acuity.checkIfPossibleSize(finalSizeInMM, finalSizeInPx)) {
-                System.out.print("logMAR is " + logMAR + ", acuity is " + acuity +
-                        ", drawable height = " + finalSizeInMM + " mm, "
-                        + "NOT POSSIBLE!" + System.lineSeparator());
-            } else {
-                System.out.print("logMAR is " + logMAR + ", acuity is " + acuity +
-                        ", drawable height = " + finalSizeInMM + " mm, " + finalSizeInPx
-                        + " px, min fontsize = " + finalMinimumFontSize
-                        + System.lineSeparator());
+        getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            public void onBackStackChanged() {
+                FragmentManager manager = getFragmentManager();
+                if (manager != null) {
+                    Fragment fragment = manager.findFragmentById(R.id.main_activity_fragment_container);
+                    if (fragment instanceof BaseFragment)
+                        ((BaseFragment) fragment).onFragmentResume();
+                }
             }
+        });
 
-
-            rotation = randomGenerator.nextInt(8);
-            bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-            bMapScaled = Bitmap.createScaledBitmap(bMap, finalSizeInPx.intValue(), finalSizeInPx.intValue(), true);
-            bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-
-
-            c_image = new C_image(bMapScaled, rotate[rotation], logMAR);
-            c_images.add(c_image);
-
-
+        if (savedInstanceState == null) {
+            getFragmentManager().beginTransaction().add(R.id.main_activity_fragment_container, new MenuFragment(), MenuFragment.NAME).commit();
         }
-
-
-
-
-
-
-
-
-
+//
+//
+//        rotate = new int[8];
+//        rotate[0] = 225;
+//        rotate[1] = 270;
+//        rotate[2] = 315;
+//        rotate[3] = 180;
+//        rotate[4] = 0;
+//        rotate[5] = 135;
+//        rotate[6] = 90;
+//        rotate[7] = 45;
+//        Random randomGenerator = new Random();
+//        c_images = new ArrayList<>();
+//
+//        int rotation;
+//        Bitmap bMap;
+//        Bitmap bMapScaled;
+//        C_image c_image;
+//
+//
+//        DisplayMetrics metrics = getResources().getDisplayMetrics();
+//
+//        System.out.println(metrics.xdpi+ " " + metrics.ydpi+" "+metrics.density);
+//
+//
+//        Acuity acuity = new Acuity();
+//
+//        for (int n = 10; n >= -3; n--) {
+//            double logMAR = acuity.round(0.1 * n);
+//            // limit to two digits
+//            double acuityD = acuity.round(Math.pow(10, -logMAR));
+//            double finalSizeInMM = acuity.round(acuity.getSizeInMM(Acuity.distance, logMAR));
+//            Double finalSizeInPx = acuity.round(acuity.getHeightInPx(finalSizeInMM));
+//            // Get minimum suggested font size
+//            int finalMinimumFontSize = acuity.getMinimumSuggestedFontSize(finalSizeInPx);
+//
+//            // Due to device screen sizes and resolutions, some of our values are so small
+//            // that there are not enough pixels for the critical gap. Check for it here
+//            if (!acuity.checkIfPossibleSize(finalSizeInMM, finalSizeInPx)) {
+//                System.out.print("logMAR is " + logMAR + ", acuity is " + acuity +
+//                        ", drawable height = " + finalSizeInMM + " mm, "
+//                        + "NOT POSSIBLE!" + System.lineSeparator());
+//            } else {
+//                System.out.print("logMAR is " + logMAR + ", acuity is " + acuity +
+//                        ", drawable height = " + finalSizeInMM + " mm, " + finalSizeInPx
+//                        + " px, min fontsize = " + finalMinimumFontSize
+//                        + System.lineSeparator());
+//            }
+//
+//
+//            rotation = randomGenerator.nextInt(8);
+//            bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//            bMapScaled = Bitmap.createScaledBitmap(bMap, finalSizeInPx.intValue(), finalSizeInPx.intValue(), true);
+//            bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+//
+//
+//            c_image = new C_image(bMapScaled, rotate[rotation], logMAR);
+//            c_images.add(c_image);
+//
+//
+//        }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+////        rotation = randomGenerator.nextInt(8);
+////        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 102, 102, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////
+////        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 48);
+////        c_images.add(c_image);
+////        rotation = randomGenerator.nextInt(8);
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 81, 82, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 38);
+////
+////        c_images.add(c_image);
+////
+////        rotation = randomGenerator.nextInt(8);
+////
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 64, 65, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 30);
+////        c_images.add(c_image);
+////        rotation = randomGenerator.nextInt(8);
+////
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 51, 52, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 24);
+////        c_images.add(c_image);
+////        rotation = randomGenerator.nextInt(8);
+////
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 40, 42, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 19);
+////        c_images.add(c_image);
+////        rotation = randomGenerator.nextInt(8);
+////
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 32, 33, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 15);
+////        c_images.add(c_image);
+////        rotation = randomGenerator.nextInt(8);
+////
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 25, 27, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 12);
+////        c_images.add(c_image);
+////        rotation = randomGenerator.nextInt(8);
+////
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 20, 21, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], (6 / 9.5));
+////        c_images.add(c_image);
+////        rotation = randomGenerator.nextInt(8);
+////
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 16, 17, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], (6 / 7.5));
+////        c_images.add(c_image);
+////        rotation = randomGenerator.nextInt(8);
+////
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 13, 14, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 6);
+////        c_images.add(c_image);
+////        rotation = randomGenerator.nextInt(8);
+////
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 10, 11, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], (6 / 4.8));
+////        c_images.add(c_image);
+////        rotation = randomGenerator.nextInt(8);
+////
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 8, 9, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], (6 / 3.8));
+////        c_images.add(c_image);
+////        rotation = randomGenerator.nextInt(8);
+////
+////        bMapScaled = Bitmap.createScaledBitmap(bMap, 6, 7, true);
+////        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+////        c_image = new C_image(bMapScaled, rotate[rotation], (6 / 3));
+////        c_images.add(c_image);
+//
+//
+//        //contrast images
+//
 //        rotation = randomGenerator.nextInt(8);
 //        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 102, 102, true);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//
-//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 48);
-//        c_images.add(c_image);
-//        rotation = randomGenerator.nextInt(8);
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 81, 82, true);
-//        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 38);
-//
+//        bMapScaled = adjustedContrast(bMapScaled, 1);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
 //
 //        rotation = randomGenerator.nextInt(8);
-//
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 64, 65, true);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 30);
+//        bMapScaled = adjustedContrast(bMapScaled, 0.45);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
+//
 //        rotation = randomGenerator.nextInt(8);
-//
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 51, 52, true);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 24);
+//        bMapScaled = adjustedContrast(bMapScaled, 0);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
+//
 //        rotation = randomGenerator.nextInt(8);
-//
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 40, 42, true);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 19);
+//        bMapScaled = adjustedContrast(bMapScaled, -0.31);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
+//
 //        rotation = randomGenerator.nextInt(8);
-//
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 32, 33, true);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 15);
+//        bMapScaled = adjustedContrast(bMapScaled, -0.52);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
+//
 //        rotation = randomGenerator.nextInt(8);
-//
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 25, 27, true);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 12);
+//        bMapScaled = adjustedContrast(bMapScaled, -0.65);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
+//
 //        rotation = randomGenerator.nextInt(8);
-//
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 20, 21, true);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], (6 / 9.5));
+//        bMapScaled = adjustedContrast(bMapScaled, -0.74);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
+//
 //        rotation = randomGenerator.nextInt(8);
-//
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 16, 17, true);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], (6 / 7.5));
+//        bMapScaled = adjustedContrast(bMapScaled, -0.84);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
+//
 //        rotation = randomGenerator.nextInt(8);
-//
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 13, 14, true);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 6);
+//        bMapScaled = adjustedContrast(bMapScaled, -0.91);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
+//
 //        rotation = randomGenerator.nextInt(8);
-//
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 10, 11, true);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], (6 / 4.8));
+//        bMapScaled = adjustedContrast(bMapScaled, -0.95);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
+//
 //        rotation = randomGenerator.nextInt(8);
-//
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 8, 9, true);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], (6 / 3.8));
+//        bMapScaled = adjustedContrast(bMapScaled, -1.03);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
+//
 //        rotation = randomGenerator.nextInt(8);
-//
-//        bMapScaled = Bitmap.createScaledBitmap(bMap, 6, 7, true);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
 //        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-//        c_image = new C_image(bMapScaled, rotate[rotation], (6 / 3));
+//        bMapScaled = adjustedContrast(bMapScaled, -1.08);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
 //        c_images.add(c_image);
-
-
-        //contrast images
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, 1);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, 0.45);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, 0);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -0.31);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -0.52);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -0.65);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -0.74);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -0.84);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -0.91);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -0.95);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -1.03);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -1.08);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -1.1);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -1.13);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -1.16);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
-
-        rotation = randomGenerator.nextInt(8);
-        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
-        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
-        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
-        bMapScaled = adjustedContrast(bMapScaled, -1.19);
-        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
-        c_images.add(c_image);
+//
+//        rotation = randomGenerator.nextInt(8);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
+//        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+//        bMapScaled = adjustedContrast(bMapScaled, -1.1);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
+//        c_images.add(c_image);
+//
+//        rotation = randomGenerator.nextInt(8);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
+//        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+//        bMapScaled = adjustedContrast(bMapScaled, -1.13);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
+//        c_images.add(c_image);
+//
+//        rotation = randomGenerator.nextInt(8);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
+//        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+//        bMapScaled = adjustedContrast(bMapScaled, -1.16);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
+//        c_images.add(c_image);
+//
+//        rotation = randomGenerator.nextInt(8);
+//        bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+//        bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
+//        bMapScaled = RotateBitmap(bMapScaled, rotate[rotation]);
+//        bMapScaled = adjustedContrast(bMapScaled, -1.19);
+//        c_image = new C_image(bMapScaled, rotate[rotation], 6 / 60);
+//        c_images.add(c_image);
 
 
         super.onCreate(savedInstanceState);
@@ -397,15 +425,15 @@ public class MainActivity extends Activity implements MessageListener {
 
         //	_mySurfaceView.setLayoutParams(layout);
         _currentDistanceView = (TextView) findViewById(R.id.currentDistance);
-        _calibrateButton = (Button) findViewById(R.id.calibrateButton);
+     //   _calibrateButton = (Button) findViewById(R.id.calibrateButton);
 
         // _audioManager = (AudioManager) this
         // .getSystemService(Context.AUDIO_SERVICE);
-        if (imageCounter < c_images.size()) {
-            ImageView image = (ImageView) findViewById(R.id.c);
-            image.setImageBitmap(c_images.get(imageCounter).getBitMap());
-            imageCounter++;
-        }
+//        if (imageCounter < c_images.size()) {
+//            ImageView image = (ImageView) findViewById(R.id.c);
+//            image.setImageBitmap(c_images.get(imageCounter).getBitMap());
+//            imageCounter++;
+//        }
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -420,7 +448,7 @@ public class MainActivity extends Activity implements MessageListener {
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
 
@@ -493,54 +521,55 @@ public class MainActivity extends Activity implements MessageListener {
 
     public void cameraSetup()
     {
-        MessageHUB.get().registerListener(this);
-        initializeCameraView();
-        _cam = Camera.open(1);
+        if (_cam == null) {
+            MessageHUB.get().registerListener(this);
+            initializeCameraView();
+            _cam = Camera.open(1);
 
-        Camera.Parameters param = _cam.getParameters();
+            Camera.Parameters param = _cam.getParameters();
 
 
-        // Find the best suitable camera picture size for your device. Competent
-        // research has shown that a smaller size gets better results up to a
-        // certain point.
-        // http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=6825217&url=http%3A%2F%2Fieeexplore.ieee.org%2Fiel7%2F6816619%2F6825201%2F06825217.pdf%3Farnumber%3D6825217
-        List<Size> pSize = param.getSupportedPictureSizes();
-        double deviceRatio = (double) this.getResources().getDisplayMetrics().widthPixels
-                / (double) this.getResources().getDisplayMetrics().heightPixels;
+            // Find the best suitable camera picture size for your device. Competent
+            // research has shown that a smaller size gets better results up to a
+            // certain point.
+            // http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=6825217&url=http%3A%2F%2Fieeexplore.ieee.org%2Fiel7%2F6816619%2F6825201%2F06825217.pdf%3Farnumber%3D6825217
+            List<Size> pSize = param.getSupportedPictureSizes();
+            double deviceRatio = (double) this.getResources().getDisplayMetrics().widthPixels
+                    / (double) this.getResources().getDisplayMetrics().heightPixels;
 
-        Size bestSize = pSize.get(0);
-        double bestRation = (double) bestSize.width / (double) bestSize.height;
+            Size bestSize = pSize.get(0);
+            double bestRation = (double) bestSize.width / (double) bestSize.height;
 
-        for (Size size : pSize) {
-            double sizeRatio = (double) size.width / (double) size.height;
+            for (Size size : pSize) {
+                double sizeRatio = (double) size.width / (double) size.height;
 
-            if (Math.abs(deviceRatio - bestRation) > Math.abs(deviceRatio
-                    - sizeRatio)) {
-                bestSize = size;
-                bestRation = sizeRatio;
+                if (Math.abs(deviceRatio - bestRation) > Math.abs(deviceRatio
+                        - sizeRatio)) {
+                    bestSize = size;
+                    bestRation = sizeRatio;
+                }
             }
+            _cameraHeight = bestSize.height;
+            _cameraWidth = bestSize.width;
+
+            Log.d("PInfo", _cameraWidth + " x " + _cameraHeight);
+
+            param.setPreviewSize(_cameraWidth, _cameraHeight);
+            _cam.setParameters(param);
+
+
+            _mySurfaceView.setCamera(_cam);
+
+
+            pressedCalibrate();
         }
-        _cameraHeight = bestSize.height;
-        _cameraWidth = bestSize.width;
-
-        Log.d("PInfo", _cameraWidth + " x " + _cameraHeight);
-
-        param.setPreviewSize(_cameraWidth, _cameraHeight);
-        _cam.setParameters(param);
-
-
-        _mySurfaceView.setCamera(_cam);
-
-
-
-        pressedCalibrate();
     }
 
     public void pressedCalibrate() {
 
         if (!_mySurfaceView.isCalibrated()) {
 
-            _calibrateButton.setBackgroundResource(R.drawable.yellow_button);
+//            _calibrateButton.setBackgroundResource(R.drawable.yellow_button);
             _mySurfaceView.calibrate();
         }
     }
@@ -549,7 +578,7 @@ public class MainActivity extends Activity implements MessageListener {
 
         if (_mySurfaceView.isCalibrated()) {
 
-            _calibrateButton.setBackgroundResource(R.drawable.red_button);
+   //         _calibrateButton.setBackgroundResource(R.drawable.red_button);
             _mySurfaceView.reset();
         }
     }
@@ -719,14 +748,14 @@ public class MainActivity extends Activity implements MessageListener {
 
     public void updateUI(final MeasurementStepMessage message) {
 
-        _currentDistanceView.setText(_decimalFormater.format(message
-                .getDistToFace()) + " cm");
+//        _currentDistanceView.setText(_decimalFormater.format(message
+//                .getDistToFace()) + " cm");
 
         Log.d("distance", _decimalFormater.format(message
                 .getDistToFace()) + " cm");
         float fontRatio = message.getDistToFace() / 29.7f;
 
-        _currentDistanceView.setTextSize(fontRatio * 20);
+//        _currentDistanceView.setTextSize(fontRatio * 20);
 
     }
 
@@ -777,7 +806,7 @@ public class MainActivity extends Activity implements MessageListener {
 
             case MessageHUB.DONE_CALIBRATION:
 
-                _calibrateButton.setBackgroundResource(R.drawable.green_button);
+//                _calibrateButton.setBackgroundResource(R.drawable.green_button);
 
                 break;
             default:

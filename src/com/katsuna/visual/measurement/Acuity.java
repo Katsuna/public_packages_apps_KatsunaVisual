@@ -11,7 +11,7 @@ import java.lang.Math.*;
 
 public class Acuity {
 
-    public static double distance = 0.53; // in metres
+    public static double distance = 0.40; // in metres
     // In Android, we should pull these values programmatically with system calls
     private  int devicePPI = 423; // Nexus 5X
     private  double scaledDensity = 4; // 480dpi / 160dpi, Nexus 5X
