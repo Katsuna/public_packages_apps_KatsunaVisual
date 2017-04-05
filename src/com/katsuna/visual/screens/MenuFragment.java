@@ -77,6 +77,7 @@ public class MenuFragment extends BaseFragment {
 
         SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity().getBaseContext(), aList, R.layout.test_list, from, to);
         listView.setAdapter(simpleAdapter);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
@@ -88,8 +89,8 @@ public class MenuFragment extends BaseFragment {
                         okButton = (Button) view.findViewById(R.id.okButton);
                         cancelButton = (Button) view.findViewById(R.id.cancelButton);
 
-                        listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, listView.getHeight() + okButton.getHeight()));
-
+                        listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, listView.getHeight() + okButton.getMinHeight()));
+                        listView.requestLayout();
                         okButton.setVisibility(View.VISIBLE);
                         cancelButton.setVisibility(View.VISIBLE);
                         final Button finalCancelButton = cancelButton;
@@ -108,8 +109,8 @@ public class MenuFragment extends BaseFragment {
                     case 1:
                         okButton = (Button) view.findViewById(R.id.okButton);
                         cancelButton = (Button) view.findViewById(R.id.cancelButton);
-                        listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, listView.getHeight() + okButton.getHeight()));
-
+                        listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, listView.getHeight() + okButton.getMinHeight()));
+                        listView.requestLayout();
 
                         final Button finalCancelButton1 = cancelButton;
                         final Button finalOkButton1 = okButton;
