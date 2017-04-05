@@ -52,12 +52,12 @@ public class FaceDetectionThread extends Thread {
         if (!yuvimage.compressToJpeg(new Rect(0, 0, _previewSize.width,
                 _previewSize.height), 100, baos)) {
 
-            Log.e("Camera", "compressToJpeg failed");
+       //     Log.e("Camera", "compressToJpeg failed");
 
         }
 
-        Log.i("Timing", "Compression finished: "
-                + (System.currentTimeMillis() - t));
+     //   Log.i("Timing", "Compression finished: "
+      //          + (System.currentTimeMillis() - t));
         t = System.currentTimeMillis();
 
         BitmapFactory.Options bfo = new BitmapFactory.Options();
@@ -66,7 +66,7 @@ public class FaceDetectionThread extends Thread {
         _currentFrame = BitmapFactory.decodeStream(new ByteArrayInputStream(
                 baos.toByteArray()), null, bfo);
 
-        Log.i("Timing", "Decode Finished: " + (System.currentTimeMillis() - t));
+      //  Log.i("Timing", "Decode Finished: " + (System.currentTimeMillis() - t));
         t = System.currentTimeMillis();
 
         // Rotate the so it siuts our portrait mode
@@ -77,12 +77,12 @@ public class FaceDetectionThread extends Thread {
         _currentFrame = Bitmap.createBitmap(_currentFrame, 0, 0,
                 _previewSize.width, _previewSize.height, matrix, false);
 
-        Log.i("Timing",
-                "Rotate, Create finished: " + (System.currentTimeMillis() - t));
+      //  Log.i("Timing",
+      //          "Rotate, Create finished: " + (System.currentTimeMillis() - t));
         t = System.currentTimeMillis();
 
         if (_currentFrame == null) {
-            Log.e(FACEDETECTIONTHREAD_TAG, "Could not decode Image");
+          //  Log.e(FACEDETECTIONTHREAD_TAG, "Could not decode Image");
             return;
         }
 
@@ -92,11 +92,11 @@ public class FaceDetectionThread extends Thread {
         Face[] faces = new Face[1];
         d.findFaces(_currentFrame, faces);
 
-        Log.i("Timing",
-                "FaceDetection finished: " + (System.currentTimeMillis() - t));
+      //  Log.i("Timing",
+     //           "FaceDetection finished: " + (System.currentTimeMillis() - t));
         t = System.currentTimeMillis();
 
         _currentFace = faces[0];
-        Log.d(FACEDETECTIONTHREAD_TAG, "Found: " + faces[0] + " Faces");
+   //     Log.d(FACEDETECTIONTHREAD_TAG, "Found: " + faces[0] + " Faces");
     }
 }

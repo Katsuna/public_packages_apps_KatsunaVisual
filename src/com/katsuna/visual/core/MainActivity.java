@@ -552,7 +552,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
             _cameraHeight = bestSize.height;
             _cameraWidth = bestSize.width;
 
-            Log.d("PInfo", _cameraWidth + " x " + _cameraHeight);
+     //       Log.d("PInfo", _cameraWidth + " x " + _cameraHeight);
 
             param.setPreviewSize(_cameraWidth, _cameraHeight);
             _cam.setParameters(param);

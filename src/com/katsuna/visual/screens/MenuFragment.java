@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -21,7 +23,6 @@ import java.util.List;
 public class MenuFragment extends BaseFragment {
 
     public static String NAME = "MENU_FRAGMENT";
-
 
 
     int[] listviewImage = new int[]{
@@ -42,6 +43,7 @@ public class MenuFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
     }
@@ -72,6 +74,31 @@ public class MenuFragment extends BaseFragment {
 
         SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity().getBaseContext(), aList, R.layout.test_list, from, to);
         listView.setAdapter(simpleAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                Button okButton, cancelButton;
+                switch (position)
+                {
+                    case 0:
+                        okButton = (Button) view.findViewById(R.id.okButton);
+                        cancelButton = (Button) view.findViewById(R.id.cancelButton);
+
+                        okButton.setVisibility(View.VISIBLE);
+                        cancelButton.setVisibility(View.VISIBLE);
+
+
+
+                    case 1:
+                        okButton = (Button) view.findViewById(R.id.okButton);
+                        cancelButton = (Button) view.findViewById(R.id.cancelButton);
+
+                        okButton.setVisibility(View.VISIBLE);
+                        cancelButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         return rootView;
     }
 
