@@ -7,9 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 
 import com.katsuna.visual.BaseFragment;
@@ -85,17 +88,42 @@ public class MenuFragment extends BaseFragment {
                         okButton = (Button) view.findViewById(R.id.okButton);
                         cancelButton = (Button) view.findViewById(R.id.cancelButton);
 
+                        listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, listView.getHeight() + okButton.getHeight()));
+
                         okButton.setVisibility(View.VISIBLE);
                         cancelButton.setVisibility(View.VISIBLE);
+                        final Button finalCancelButton = cancelButton;
+                        final Button finalOkButton = okButton;
+                        cancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                finalCancelButton.setVisibility(View.GONE);
+                                finalOkButton.setVisibility(View.GONE);
+                            }
+                        });
 
+                        break;
 
 
                     case 1:
                         okButton = (Button) view.findViewById(R.id.okButton);
                         cancelButton = (Button) view.findViewById(R.id.cancelButton);
+                        listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, listView.getHeight() + okButton.getHeight()));
+
+
+                        final Button finalCancelButton1 = cancelButton;
+                        final Button finalOkButton1 = okButton;
+                        cancelButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                finalCancelButton1.setVisibility(View.GONE);
+                                finalOkButton1.setVisibility(View.GONE);
+                            }
+                        });
 
                         okButton.setVisibility(View.VISIBLE);
                         cancelButton.setVisibility(View.VISIBLE);
+                        break;
                 }
             }
         });
