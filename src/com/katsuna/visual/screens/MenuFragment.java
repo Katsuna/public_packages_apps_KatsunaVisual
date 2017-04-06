@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -71,7 +72,16 @@ public class MenuFragment extends BaseFragment {
         int[] to = {R.id.icon, R.id.Itemname};
 
         SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity().getBaseContext(), aList, R.layout.test_list, from, to);
+
         listView.setAdapter(simpleAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                    long id) {
+                System.out.println(position);
+            }
+        });
         return rootView;
     }
 
