@@ -46,6 +46,7 @@
 
     <!-- Test Layout -->
     <string name="test_fragment_optical_test_title">Visual acuity test</string>
+    <string name="test_fragment_optical_test_steps">Step 1 of 10</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
