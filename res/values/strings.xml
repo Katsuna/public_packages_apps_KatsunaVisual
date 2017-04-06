@@ -44,6 +44,9 @@
     <string name="menu_fragment_open_button_title">OPEN TEST</string>
     <string name="menu_fragment_close_button_title">CLOSE</string>
 
+    <!-- Test Layout -->
+    <string name="test_fragment_optical_test_title">Visual acuity test</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
