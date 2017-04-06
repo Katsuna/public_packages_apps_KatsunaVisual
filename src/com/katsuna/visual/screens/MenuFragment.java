@@ -95,6 +95,13 @@ public class MenuFragment extends BaseFragment {
                         cancelButton.setVisibility(View.VISIBLE);
                         final Button finalCancelButton = cancelButton;
                         final Button finalOkButton = okButton;
+                        okButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new TestFragment(), TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+
+                            }
+                        });
                         cancelButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -111,6 +118,14 @@ public class MenuFragment extends BaseFragment {
                         cancelButton = (Button) view.findViewById(R.id.cancelButton);
                         listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, listView.getHeight() + okButton.getMinHeight()));
                         listView.requestLayout();
+
+                        okButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new TestFragment(), TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+
+                            }
+                        });
 
                         final Button finalCancelButton1 = cancelButton;
                         final Button finalOkButton1 = okButton;

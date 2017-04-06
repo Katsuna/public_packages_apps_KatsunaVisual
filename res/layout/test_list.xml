@@ -38,14 +38,23 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/item"
         android:layout_toLeftOf="@+id/cancelButton"
-        android:visibility="gone"
-        android:text="Button" />
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="10dp"
+
+        android:width="150dp"
+        android:background="@android:color/black"
+        android:text="@string/menu_fragment_open_button_title"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/item"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
-        android:text="Button" />
+        android:layout_below="@+id/item"
+        android:width="150dp"
+        android:background="@drawable/black_border_button"
+        android:text="@string/menu_fragment_close_button_title"
+        android:visibility="gone" />
 </RelativeLayout>
