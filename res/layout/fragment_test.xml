@@ -1,0 +1,275 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/viewA"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@android:color/transparent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="0.3"
+                android:orientation="vertical"
+                android:weightSum="1"
+                >
+
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:baselineAligned="true">
+
+                    <TextView
+                        android:id="@+id/info_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/test_fragment_optical_test_title"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_done"
+                        app:backgroundTint="@android:color/black"
+                        android:clickable="false"
+
+
+                        />
+
+
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:id="@+id/info_steps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="11dp"
+                    android:text="@string/test_fragment_optical_test_steps"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black" />
+
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_weight="0.7"
+                android:gravity="center"
+                >
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_below="@+id/info_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/c"
+                    app:backgroundTint="@android:color/white"
+                    android:clickable="false"
+                    android:layout_gravity="center_vertical|center_horizontal"
+
+                    />
+                </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/viewB"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@android:color/white"
+            android:orientation="vertical">
+
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+
+                <ImageView
+                    android:id="@+id/upleft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="225"
+                    android:onClick="pressedC"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/upmiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="270"
+                    android:onClick="pressedC"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/upright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="315"
+                    android:onClick="pressedC"
+
+
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/middleleft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="180"
+                    android:onClick="pressedC"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:onClick="pressedC"
+                    android:visibility="invisible"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/middleright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:onClick="pressedC"
+
+
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+
+                <ImageView
+                    android:id="@+id/downleft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="135"
+                    android:onClick="pressedC"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/downmiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="90"
+                    android:onClick="pressedC"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/downright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="45"
+                    android:onClick="pressedC"
+
+
+                    />
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+

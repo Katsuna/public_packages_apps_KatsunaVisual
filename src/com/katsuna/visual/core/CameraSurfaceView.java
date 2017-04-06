@@ -127,18 +127,18 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
 
             _foundFace.getMidPoint(_middlePoint);
 
-            Log.i("Camera", _middlePoint.x + " : " + _middlePoint.y);
+      //      Log.i("Camera", _middlePoint.x + " : " + _middlePoint.y);
 
             // portrait mode!
             float heightRatio = canvas.getHeight() / (float) _previewSize.width;
             float widthRatio = canvas.getWidth() / (float) _previewSize.height;
 
-            Log.i("Drawcall", _middlePoint.x + " : " + _middlePoint.y);
+       //     Log.i("Drawcall", _middlePoint.x + " : " + _middlePoint.y);
 
             int realX = (int) (_middlePoint.x * widthRatio);
             int realY = (int) (_middlePoint.y * heightRatio);
 
-            Log.i("Drawcall", "Real :" + realX + " : " + realY);
+        //    Log.i("Drawcall", "Real :" + realX + " : " + realY);
             int halfEyeDist = (int) (widthRatio * _foundFace.eyesDistance() / 2);
 
             if (_showTracking) {
