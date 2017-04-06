@@ -24,39 +24,40 @@
                 android:layout_width="match_parent"
                 android:layout_weight="0.3"
                 android:orientation="vertical"
+                android:weightSum="1"
                 >
 
                 <LinearLayout
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
                     android:baselineAligned="true">
 
                     <TextView
                         android:id="@+id/info_text"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
                         android:text="@string/test_fragment_optical_test_title"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black" />
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/button"
-                        android:layout_below="@+id/info_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
                         android:src="@drawable/ic_done"
                         app:backgroundTint="@android:color/black"
                         android:clickable="false"
-                        android:layout_gravity="center_vertical|center_horizontal"
+
 
                         />
 
 
                 </LinearLayout>
+
+
 
                 <TextView
                     android:id="@+id/info_steps"
@@ -93,6 +94,7 @@
                     />
                 </LinearLayout>
 
+
         </LinearLayout>
 
         <LinearLayout
@@ -101,9 +103,172 @@
             android:layout_height="match_parent"
             android:layout_weight="0.5"
             android:background="@android:color/white"
-            android:orientation="horizontal"/>
+            android:orientation="vertical">
+
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+
+                <ImageView
+                    android:id="@+id/upleft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="225"
+                    android:onClick="pressedC"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/upmiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="270"
+                    android:onClick="pressedC"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/upright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="315"
+                    android:onClick="pressedC"
+
+
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/middleleft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="180"
+                    android:onClick="pressedC"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/c"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:onClick="pressedC"
+                    android:visibility="invisible"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/middleright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:onClick="pressedC"
+
+
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+
+                <ImageView
+                    android:id="@+id/downleft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="135"
+                    android:onClick="pressedC"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/downmiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="90"
+                    android:onClick="pressedC"
+
+
+                    />
+
+                <ImageView
+                    android:id="@+id/downright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/c_button"
+                    android:layout_weight="1"
+                    android:rotation="45"
+                    android:onClick="pressedC"
+
+
+                    />
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
 
     </LinearLayout>
+
+
 
 </android.support.design.widget.CoordinatorLayout>
 
