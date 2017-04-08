@@ -63,6 +63,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
     public static final String AVG_NUM = "intent_avg_num";
     public static final String PROBANT_NAME = "intent_probant_name";
 
+    public static int testId= 0;
+
     private final float dist = 40;
 
     private AlertDialog dialog = null;
@@ -762,10 +764,13 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
         Fragment curFragment = getActiveFragment();
 
-        if(curFragment != null && curFragment instanceof TestFragment) {
+        if(curFragment != null && curFragment instanceof TestFragment && testId == 0) {
+//            if (((dist - message
+//                    .getDistToFace()) > 5) || ((dist - message
+//                    .getDistToFace()) < -5)) {
+
             if (((dist - message
-                    .getDistToFace()) > 5) || ((dist - message
-                    .getDistToFace()) < -5)) {
+                    .getDistToFace()) >= 0) ) {
 
 //                Log.d("distance", _decimalFormater.format(message
 //                        .getDistToFace()) + " cm");

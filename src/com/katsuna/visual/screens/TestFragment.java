@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.katsuna.visual.BaseFragment;
 import com.katsuna.visual.R;
+import com.katsuna.visual.core.MainActivity;
 import com.katsuna.visual.measurement.Acuity;
 import com.katsuna.visual.measurement.C_image;
 
@@ -146,9 +147,16 @@ public class TestFragment extends BaseFragment {
         if (bundle != null) {
             int testId = bundle.getInt("testId");
             if(testId == 0)
+            {
+                MainActivity activity = (MainActivity) getActivity();
+                activity.testId = 0;
                 initVisualTest();
+            }
+
             else {
                 title.setText(getString(R.string.test_fragment_contrast_test_title));
+                MainActivity activity = (MainActivity) getActivity();
+                activity.testId = 1;
                 initContrastTest();
             }
         }
