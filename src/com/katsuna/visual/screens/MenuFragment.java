@@ -1,15 +1,26 @@
 package com.katsuna.visual.screens;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -17,15 +28,20 @@ import android.widget.SimpleAdapter;
 
 import com.katsuna.visual.BaseFragment;
 import com.katsuna.visual.R;
+import com.katsuna.visual.measurement.Acuity;
+import com.katsuna.visual.measurement.C_image;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 
 public class MenuFragment extends BaseFragment {
 
     public static String NAME = "MENU_FRAGMENT";
+
+
 
 
     int[] listviewImage = new int[]{
@@ -145,6 +161,8 @@ public class MenuFragment extends BaseFragment {
         });
         return rootView;
     }
+
+
 
 
 }

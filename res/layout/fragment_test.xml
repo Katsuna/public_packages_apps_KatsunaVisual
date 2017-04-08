@@ -64,7 +64,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="11dp"
-                    android:text="@string/test_fragment_optical_test_steps"
                     android:textSize="14sp"
                     android:textColor="@android:color/black" />
 
@@ -88,6 +87,7 @@
                     android:layout_margin="16dp"
                     android:src="@drawable/c"
                     app:backgroundTint="@android:color/white"
+                    android:scaleType="center"
                     android:clickable="false"
                     android:layout_gravity="center_vertical|center_horizontal"
 
@@ -122,7 +122,7 @@
                     android:src="@drawable/c_button"
                     android:layout_weight="1"
                     android:rotation="225"
-                    android:onClick="pressedC"
+
 
 
                     />
@@ -135,7 +135,7 @@
                     android:src="@drawable/c_button"
                     android:layout_weight="1"
                     android:rotation="270"
-                    android:onClick="pressedC"
+
 
 
                     />
@@ -148,7 +148,7 @@
                     android:src="@drawable/c_button"
                     android:layout_weight="1"
                     android:rotation="315"
-                    android:onClick="pressedC"
+
 
 
                     />
@@ -169,7 +169,7 @@
                     android:src="@drawable/c_button"
                     android:layout_weight="1"
                     android:rotation="180"
-                    android:onClick="pressedC"
+
 
 
                     />
@@ -194,7 +194,7 @@
                     android:layout_gravity="center"
                     android:src="@drawable/c_button"
                     android:layout_weight="1"
-                    android:onClick="pressedC"
+
 
 
                     />
@@ -216,7 +216,7 @@
                     android:src="@drawable/c_button"
                     android:layout_weight="1"
                     android:rotation="135"
-                    android:onClick="pressedC"
+
 
 
                     />
@@ -229,7 +229,7 @@
                     android:src="@drawable/c_button"
                     android:layout_weight="1"
                     android:rotation="90"
-                    android:onClick="pressedC"
+
 
 
                     />
@@ -242,7 +242,7 @@
                     android:src="@drawable/c_button"
                     android:layout_weight="1"
                     android:rotation="45"
-                    android:onClick="pressedC"
+
 
 
                     />

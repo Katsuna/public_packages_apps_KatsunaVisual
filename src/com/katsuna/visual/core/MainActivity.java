@@ -2,6 +2,7 @@ package com.katsuna.visual.core;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -22,6 +23,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -46,6 +48,8 @@ import com.katsuna.visual.messages.MeasurementStepMessage;
 import com.katsuna.visual.messages.MessageHUB;
 import com.katsuna.visual.messages.MessageListener;
 import com.katsuna.visual.screens.MenuFragment;
+import com.katsuna.visual.screens.TestFragment;
+import com.katsuna.visual.utils.Dialogs;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -58,6 +62,10 @@ public class MainActivity extends BaseActivity implements MessageListener {
     public static final String CAM_SIZE_HEIGHT = "intent_cam_size_height";
     public static final String AVG_NUM = "intent_avg_num";
     public static final String PROBANT_NAME = "intent_probant_name";
+
+    private final float dist = 40;
+
+    private AlertDialog dialog = null;
 
     private CameraSurfaceView _mySurfaceView;
     Camera _cam;
@@ -424,7 +432,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
 
         //	_mySurfaceView.setLayoutParams(layout);
-        _currentDistanceView = (TextView) findViewById(R.id.currentDistance);
+     //   _currentDistanceView = (TextView) findViewById(R.id.currentDistance);
      //   _calibrateButton = (Button) findViewById(R.id.calibrateButton);
 
         // _audioManager = (AudioManager) this
@@ -596,154 +604,154 @@ public class MainActivity extends BaseActivity implements MessageListener {
     }
 
 
-    public void pressedC(final View view) {
-
-        Log.d("CCCCC", "moires:: " + c_images.get(imageCounter - 1).getRotation());
-
-        switch (view.getId()) {
-            case R.id.downleft:
-                Log.d("choice", "downleft");
-                if (c_images.get(imageCounter - 1).getRotation() == 135) {
-                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                } else {
-                    errors++;
-                }
-                break;
-            case R.id.downmiddle:
-                Log.d("choice", "downmiddle");
-                if (c_images.get(imageCounter - 1).getRotation() == 90) {
-                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                } else {
-                    errors++;
-                }
-                break;
-            case R.id.downright:
-                Log.d("choice", "downright");
-                if (c_images.get(imageCounter - 1).getRotation() == 45) {
-                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                } else {
-                    errors++;
-                }
-                break;
-            case R.id.middleleft:
-                Log.d("choice", "middleleft");
-                if (c_images.get(imageCounter - 1).getRotation() == 180) {
-                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                } else {
-                    errors++;
-                }
-                break;
-            case R.id.middleright:
-                Log.d("choice", "middleright");
-                if (c_images.get(imageCounter - 1).getRotation() == 0) {
-                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                } else {
-                    errors++;
-                }
-                break;
-            case R.id.upleft:
-                Log.d("choice", "upleft");
-                if (c_images.get(imageCounter - 1).getRotation() == 225) {
-                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                } else {
-                    errors++;
-                }
-                break;
-            case R.id.upmiddle:
-                Log.d("choice", "upmiddle");
-                if (c_images.get(imageCounter - 1).getRotation() == 270) {
-                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                } else {
-                    errors++;
-                }
-                break;
-            case R.id.upright:
-                Log.d("choice", "upright");
-                if (c_images.get(imageCounter - 1).getRotation() == 315) {
-                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                } else {
-                    errors++;
-                }
-                break;
-        }
-
-        Log.d("errors", "Total errors are: " + errors);
-
-        if (imageCounter < c_images.size()) {
-            ImageView image = (ImageView) findViewById(R.id.c);
-            image.setImageBitmap(c_images.get(imageCounter).getBitMap());
-            imageCounter++;
-        }
-
-    }
-
-
-    private Bitmap adjustedContrast(Bitmap image, double contrastVal) {
-        final int width = image.getWidth();
-        final int height = image.getHeight();
-        final Bitmap contrastedImage = Bitmap.createBitmap(width, height, image.getConfig());
-
-        int A, R, G, B;
-        int pixel;
-
-        double contrast = contrastVal;
-
-
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                pixel = image.getPixel(x, y);
-                A = Color.alpha(pixel);
-                R = Color.red(pixel);
-                R = (int) (((((R / 255.0) - 0.5) * contrast) + 0.5) * 255.0);
-                R = truncate(R);
-
-                G = Color.green(pixel);
-                G = (int) (((((G / 255.0) - 0.5) * contrast) + 0.5) * 255.0);
-                G = truncate(G);
-
-                B = Color.blue(pixel);
-                B = (int) (((((B / 255.0) - 0.5) * contrast) + 0.5) * 255.0);
-                B = truncate(B);
-
-
-                contrastedImage.setPixel(x, y, Color.argb(A, R, G, B));
-            }
-        }
-        return contrastedImage;
-    }
-
-    private int truncate(int value) {
-        if (value < 0) {
-            return 0;
-        } else if (value > 255) {
-            return 255;
-        }
-
-        return value;
-    }
-
-
-    public static Bitmap changeBitmapContrastBrightness(Bitmap bmp, float contrast,
-                                                        float brightness) {
-        ColorMatrix cm = new ColorMatrix(new float[]
-                {
-                        contrast, 0, 0, 0, brightness,
-                        0, contrast, 0, 0, brightness,
-                        0, 0, contrast, 0, brightness,
-                        0, 0, 0, 1, 0
-                });
-
-        Bitmap ret = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
-
-        Canvas canvas = new Canvas(ret);
-
-
-        Paint paint = new Paint();
-        paint.setColorFilter(new ColorMatrixColorFilter(cm));
-        canvas.drawBitmap(bmp, 0, 0, paint);
-
-        return ret;
-    }
+//    public void pressedC(final View vi  ew) {
+//
+//        Log.d("CCCCC", "moires:: " + c_images.get(imageCounter - 1).getRotation());
+//
+//        switch (view.getId()) {
+//            case R.id.downleft:
+//                Log.d("choice", "downleft");
+//                if (c_images.get(imageCounter - 1).getRotation() == 135) {
+//                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
+//                } else {
+//                    errors++;
+//                }
+//                break;
+//            case R.id.downmiddle:
+//                Log.d("choice", "downmiddle");
+//                if (c_images.get(imageCounter - 1).getRotation() == 90) {
+//                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
+//                } else {
+//                    errors++;
+//                }
+//                break;
+//            case R.id.downright:
+//                Log.d("choice", "downright");
+//                if (c_images.get(imageCounter - 1).getRotation() == 45) {
+//                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
+//                } else {
+//                    errors++;
+//                }
+//                break;
+//            case R.id.middleleft:
+//                Log.d("choice", "middleleft");
+//                if (c_images.get(imageCounter - 1).getRotation() == 180) {
+//                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
+//                } else {
+//                    errors++;
+//                }
+//                break;
+//            case R.id.middleright:
+//                Log.d("choice", "middleright");
+//                if (c_images.get(imageCounter - 1).getRotation() == 0) {
+//                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
+//                } else {
+//                    errors++;
+//                }
+//                break;
+//            case R.id.upleft:
+//                Log.d("choice", "upleft");
+//                if (c_images.get(imageCounter - 1).getRotation() == 225) {
+//                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
+//                } else {
+//                    errors++;
+//                }
+//                break;
+//            case R.id.upmiddle:
+//                Log.d("choice", "upmiddle");
+//                if (c_images.get(imageCounter - 1).getRotation() == 270) {
+//                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
+//                } else {
+//                    errors++;
+//                }
+//                break;
+//            case R.id.upright:
+//                Log.d("choice", "upright");
+//                if (c_images.get(imageCounter - 1).getRotation() == 315) {
+//                    Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
+//                } else {
+//                    errors++;
+//                }
+//                break;
+//        }
+//
+//        Log.d("errors", "Total errors are: " + errors);
+//
+//        if (imageCounter < c_images.size()) {
+//            ImageView image = (ImageView) findViewById(R.id.c);
+//            image.setImageBitmap(c_images.get(imageCounter).getBitMap());
+//            imageCounter++;
+//        }
+//
+//    }
+//
+//
+//    private Bitmap adjustedContrast(Bitmap image, double contrastVal) {
+//        final int width = image.getWidth();
+//        final int height = image.getHeight();
+//        final Bitmap contrastedImage = Bitmap.createBitmap(width, height, image.getConfig());
+//
+//        int A, R, G, B;
+//        int pixel;
+//
+//        double contrast = contrastVal;
+//
+//
+//        for (int x = 0; x < width; x++) {
+//            for (int y = 0; y < height; y++) {
+//                pixel = image.getPixel(x, y);
+//                A = Color.alpha(pixel);
+//                R = Color.red(pixel);
+//                R = (int) (((((R / 255.0) - 0.5) * contrast) + 0.5) * 255.0);
+//                R = truncate(R);
+//
+//                G = Color.green(pixel);
+//                G = (int) (((((G / 255.0) - 0.5) * contrast) + 0.5) * 255.0);
+//                G = truncate(G);
+//
+//                B = Color.blue(pixel);
+//                B = (int) (((((B / 255.0) - 0.5) * contrast) + 0.5) * 255.0);
+//                B = truncate(B);
+//
+//
+//                contrastedImage.setPixel(x, y, Color.argb(A, R, G, B));
+//            }
+//        }
+//        return contrastedImage;
+//    }
+//
+//    private int truncate(int value) {
+//        if (value < 0) {
+//            return 0;
+//        } else if (value > 255) {
+//            return 255;
+//        }
+//
+//        return value;
+//    }
+//
+//
+//    public static Bitmap changeBitmapContrastBrightness(Bitmap bmp, float contrast,
+//                                                        float brightness) {
+//        ColorMatrix cm = new ColorMatrix(new float[]
+//                {
+//                        contrast, 0, 0, 0, brightness,
+//                        0, contrast, 0, 0, brightness,
+//                        0, 0, contrast, 0, brightness,
+//                        0, 0, 0, 1, 0
+//                });
+//
+//        Bitmap ret = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
+//
+//        Canvas canvas = new Canvas(ret);
+//
+//
+//        Paint paint = new Paint();
+//        paint.setColorFilter(new ColorMatrixColorFilter(cm));
+//        canvas.drawBitmap(bmp, 0, 0, paint);
+//
+//        return ret;
+//    }
 
 
     public void updateUI(final MeasurementStepMessage message) {
@@ -751,8 +759,35 @@ public class MainActivity extends BaseActivity implements MessageListener {
 //        _currentDistanceView.setText(_decimalFormater.format(message
 //                .getDistToFace()) + " cm");
 
-        Log.d("distance", _decimalFormater.format(message
-                .getDistToFace()) + " cm");
+
+        Fragment curFragment = getActiveFragment();
+
+        if(curFragment != null && curFragment instanceof TestFragment) {
+            if (((dist - message
+                    .getDistToFace()) > 5) || ((dist - message
+                    .getDistToFace()) < -5)) {
+
+                Log.d("distance", _decimalFormater.format(message
+                        .getDistToFace()) + " cm");
+
+                if (dialog == null)
+                    dialog = Dialogs.ShowAlertDialog(this, getString(R.string.distance_alert_title), _decimalFormater.format(message.getDistToFace()), false);
+                else {
+                    dialog.setMessage(Html.fromHtml("<b>" + _decimalFormater.format(message.getDistToFace()) + " cm</b>"));
+                }
+
+            } else {
+                if (dialog != null) {
+                    dialog.dismiss();
+                    dialog = null;
+                }
+            }
+        }
+
+
+
+
+
         float fontRatio = message.getDistToFace() / 29.7f;
 
 //        _currentDistanceView.setTextSize(fontRatio * 20);
@@ -885,4 +920,13 @@ public class MainActivity extends BaseActivity implements MessageListener {
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
+
+    public Fragment getActiveFragment() {
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
+            return null;
+        }
+        String tag = getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount() - 1).getName();
+        return getFragmentManager().findFragmentByTag(tag);
+    }
+
 }
