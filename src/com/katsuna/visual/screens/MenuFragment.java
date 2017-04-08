@@ -114,7 +114,11 @@ public class MenuFragment extends BaseFragment {
                         okButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new TestFragment(), TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("testId", 0);
+                                TestFragment fragment = new TestFragment();
+                                fragment.setArguments(bundle);
+                                getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
 
                             }
                         });
@@ -138,7 +142,11 @@ public class MenuFragment extends BaseFragment {
                         okButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, new TestFragment(), TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("testId", 1);
+                                TestFragment fragment = new TestFragment();
+                                fragment.setArguments(bundle);
+                                getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
 
                             }
                         });

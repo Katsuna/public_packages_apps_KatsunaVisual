@@ -767,8 +767,8 @@ public class MainActivity extends BaseActivity implements MessageListener {
                     .getDistToFace()) > 5) || ((dist - message
                     .getDistToFace()) < -5)) {
 
-                Log.d("distance", _decimalFormater.format(message
-                        .getDistToFace()) + " cm");
+//                Log.d("distance", _decimalFormater.format(message
+//                        .getDistToFace()) + " cm");
 
                 if (dialog == null)
                     dialog = Dialogs.ShowAlertDialog(this, getString(R.string.distance_alert_title), _decimalFormater.format(message.getDistToFace()), false);
