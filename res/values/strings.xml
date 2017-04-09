@@ -54,6 +54,17 @@
     <!-- Distance alert layout -->
     <string name="distance_alert_title">Please keep the screen at a distance of around 40 cm </string>
 
+    <!-- Finish alert layout -->
+
+    <string name="finish_alert_title">Well done!</string>
+    <string name="finish_alert_message">You have completed the test. Press the finish button to continue.</string>
+    <string name="finish_alert_button">FINISH</string>
+
+
+
+
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

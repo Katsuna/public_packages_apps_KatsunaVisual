@@ -775,17 +775,29 @@ public class MainActivity extends BaseActivity implements MessageListener {
 //                Log.d("distance", _decimalFormater.format(message
 //                        .getDistToFace()) + " cm");
 
-                if (dialog == null)
+                if (dialog == null) {
                     dialog = Dialogs.ShowAlertDialog(this, getString(R.string.distance_alert_title), _decimalFormater.format(message.getDistToFace()), false);
-                else {
+                    TestFragment.getDistanceButton().setVisibility(View.INVISIBLE);
+                }
+                    else {
                     dialog.setMessage(Html.fromHtml("<b>" + _decimalFormater.format(message.getDistToFace()) + " cm</b>"));
                 }
 
             } else {
                 if (dialog != null) {
+                    TestFragment.getDistanceButton().setVisibility(View.VISIBLE);
+
                     dialog.dismiss();
                     dialog = null;
                 }
+            }
+        }
+        else
+        {
+            if (dialog != null) {
+
+                dialog.dismiss();
+                dialog = null;
             }
         }
 

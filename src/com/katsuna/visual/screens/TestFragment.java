@@ -1,5 +1,6 @@
 package com.katsuna.visual.screens;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -23,6 +24,7 @@ import com.katsuna.visual.R;
 import com.katsuna.visual.core.MainActivity;
 import com.katsuna.visual.measurement.Acuity;
 import com.katsuna.visual.measurement.C_image;
+import com.katsuna.visual.utils.Dialogs;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -40,7 +42,7 @@ public class TestFragment extends BaseFragment {
 
     TextView steps;
 
-    private FloatingActionButton cButton;
+    private static FloatingActionButton cButton, distanceButton;
     ArrayList<C_image> c_images;
     private TextView title;
 
@@ -63,6 +65,11 @@ public class TestFragment extends BaseFragment {
 
     }
 
+    public static FloatingActionButton getDistanceButton()
+    {
+        return distanceButton;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -71,6 +78,8 @@ public class TestFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_test, container, false);
 
         cButton = (FloatingActionButton) view.findViewById(R.id.fab);
+
+        distanceButton = (FloatingActionButton) view.findViewById(R.id.distanceButton);
 
         upLeft = (ImageView) view.findViewById(R.id.upleft);
         upMiddle = (ImageView) view.findViewById(R.id.upmiddle);
@@ -157,6 +166,7 @@ public class TestFragment extends BaseFragment {
                 title.setText(getString(R.string.test_fragment_contrast_test_title));
                 MainActivity activity = (MainActivity) getActivity();
                 activity.testId = 1;
+                distanceButton.setVisibility(View.INVISIBLE);
                 initContrastTest();
             }
         }
@@ -253,6 +263,18 @@ public class TestFragment extends BaseFragment {
             steps.setText(getString(R.string.test_fragment_optical_test_step) + " " + (imageCounter+1) + " " + getString(R.string.test_fragment_optical_test_of) + " " + c_images.size());
 
             imageCounter++;
+        }
+        else
+        {
+            MainActivity activity = (MainActivity) getActivity();
+            activity.testId = 1;
+            Dialogs.ShowFinishTestDialog(getActivity(),getString(R.string.finish_alert_title), getString(R.string.finish_alert_message), getString(R.string.finish_alert_button), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    getFragmentManager().popBackStack();
+                }
+
+            }, false);
         }
 
     }

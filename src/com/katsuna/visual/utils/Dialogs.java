@@ -36,4 +36,40 @@ public class Dialogs {
 
         return dialog;
     }
+
+
+    public static AlertDialog ShowFinishTestDialog(Activity activity, String title, String message, String positiveButtonTitle, DialogInterface.OnClickListener positiveButtonListener, boolean cancelable) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        if (title != null) {
+            builder.setTitle(title);
+        }
+
+        if (message != null) {
+            builder.setMessage(message);
+        }
+
+        if (positiveButtonTitle != null) {
+            builder.setPositiveButton(positiveButtonTitle, positiveButtonListener == null ? new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            } : positiveButtonListener);
+        }
+
+        builder.setCancelable(cancelable);
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+        TextView messageText = (TextView)dialog.findViewById(android.R.id.message);
+        messageText.setGravity(Gravity.CENTER);
+
+
+        return dialog;
+    }
+
+
+
 }
