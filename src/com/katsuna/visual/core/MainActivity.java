@@ -50,6 +50,7 @@ import com.katsuna.visual.messages.MessageListener;
 import com.katsuna.visual.screens.InstructionsFragment;
 import com.katsuna.visual.screens.MenuFragment;
 import com.katsuna.visual.screens.TestFragment;
+import com.katsuna.visual.screens.TestInstructionsFragment;
 import com.katsuna.visual.utils.Dialogs;
 
 import java.text.DecimalFormat;
@@ -574,6 +575,28 @@ public class MainActivity extends BaseActivity implements MessageListener {
 
             pressedCalibrate();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment curFragment = getActiveFragment();
+
+        if(curFragment != null && curFragment instanceof TestFragment)
+        {
+            Fragment menu = getFragmentManager().findFragmentByTag(MenuFragment.NAME);
+            getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, menu, MenuFragment.NAME).addToBackStack(MenuFragment.NAME).commit();
+        }
+        else if (curFragment != null && curFragment instanceof TestInstructionsFragment)
+        {
+            Fragment menu = getFragmentManager().findFragmentByTag(MenuFragment.NAME);
+            getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, menu, MenuFragment.NAME).addToBackStack(MenuFragment.NAME).commit();
+        }
+        else if (curFragment != null && curFragment instanceof MenuFragment)
+            finish();
+        else if (curFragment == null)
+            finish();
+        else
+            getFragmentManager().popBackStack();
     }
 
     public void pressedCalibrate() {

@@ -1,6 +1,7 @@
 package com.katsuna.visual.screens;
 
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -38,9 +39,12 @@ public class TestInstructionsFragment extends BaseFragment {
     int imageCounter = 0;
     int[] rotate;
 
+    private int currentStep = 1;
+
     private boolean clickable = false;
 
     private ImageView upLeft,upMiddle, upRight, middleLeft, middleRight, downLeft, downMiddle, downRight;
+    private FloatingActionButton nextButton;
 
     TextView steps;
 
@@ -83,6 +87,9 @@ public class TestInstructionsFragment extends BaseFragment {
 
         distanceButton = (FloatingActionButton) view.findViewById(R.id.distanceButton);
 
+
+
+
         upLeft = (ImageView) view.findViewById(R.id.upleft);
         upMiddle = (ImageView) view.findViewById(R.id.upmiddle);
         upRight = (ImageView) view.findViewById(R.id.upright);
@@ -92,9 +99,119 @@ public class TestInstructionsFragment extends BaseFragment {
         downMiddle = (ImageView) view.findViewById(R.id.downmiddle);
         downRight = (ImageView) view.findViewById(R.id.downright);
 
+        nextButton = (FloatingActionButton) view.findViewById(R.id.nextInstructionsButton) ;
+
         steps = (TextView) view.findViewById(R.id.info_steps);
 
         title = (TextView) view.findViewById(R.id.info_text);
+
+        final double  logMAR = 0.0;
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            int testId = bundle.getInt("testId");
+            if (testId == 0) {
+
+                title.setText(getString(R.string.instructions_fragment_instructions_title));
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int rotation;
+                        Bitmap bMap;
+                        Bitmap bMapScaled;
+                        C_image c_image;
+                        downRight.setClickable(false);
+                        upRight.setClickable(false);
+
+
+                        switch (currentStep) {
+                            case 1:
+                                rotation = -45;
+                                bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+                                bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
+                                bMapScaled = RotateBitmap(bMapScaled, rotation);
+                                c_image = new C_image(bMapScaled, rotation, logMAR);
+                                cButton.setImageBitmap(c_image.getBitMap());
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_2));
+                                currentStep++;
+                                break;
+                            case 2:
+                                upLeft.setAlpha(0.5f);
+                                upMiddle.setAlpha(0.5f);
+                                middleLeft.setAlpha(0.5f);
+                                middleRight.setAlpha(0.5f);
+                                downLeft.setAlpha(0.5f);
+                                downMiddle.setAlpha(0.5f);
+                                downRight.setAlpha(0.5f);
+
+
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_3));
+                                currentStep++;
+                                break;
+                            case 3 :
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_4));
+                                clickable = true;
+                                nextButton.setClickable(false);
+                                upRight.setClickable(true);
+                                currentStep++;
+                                break;
+                            case 4:
+                                nextButton.setClickable(true);
+                                upRight.setClickable(false);
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_5));
+                                upLeft.setAlpha(1f);
+                                upMiddle.setAlpha(1f);
+                                middleLeft.setAlpha(1f);
+                                middleRight.setAlpha(1f);
+                                downLeft.setAlpha(1f);
+                                downMiddle.setAlpha(1f);
+                                downRight.setAlpha(1f);
+                                rotation = 45;
+                                bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+                                bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
+                                bMapScaled = RotateBitmap(bMapScaled, rotation);
+                                c_image = new C_image(bMapScaled, rotation, logMAR);
+                                cButton.setImageBitmap(c_image.getBitMap());
+                                nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+                                currentStep++;
+                                break;
+                            case 5:
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_6));
+                                nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                                nextButton.setClickable(false);
+                                downRight.setClickable(true);
+                                currentStep++;
+                                break;
+                            case 6:
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_7));
+                                nextButton.setClickable(true);
+                                currentStep++;
+                                break;
+                            case 7:
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_8));
+                                currentStep++;
+                                nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+                                break;
+                            case 8:
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("testId", 0);
+                                TestFragment fragment = new TestFragment();
+                                fragment.setArguments(bundle);
+                                getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+                                break;
+
+
+
+
+
+
+                        }
+                    }
+                });
+            } else {
+
+            }
+        }
 
         upLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +232,7 @@ public class TestInstructionsFragment extends BaseFragment {
         upRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pressedC(view);
+                nextScreen(view);
             }
         });
 
@@ -150,124 +267,31 @@ public class TestInstructionsFragment extends BaseFragment {
         downRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pressedC(view);
+                correct(view);
             }
         });
-
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            int testId = bundle.getInt("testId");
-            if(testId == 0)
-            {
-                MainActivity activity = (MainActivity) getActivity();
-                activity.testId = 1;
-                initVisualTest();
-            }
-
-            else {
-                title.setText(getString(R.string.test_fragment_contrast_test_title));
-                MainActivity activity = (MainActivity) getActivity();
-                activity.testId = 1;
-                distanceButton.setVisibility(View.INVISIBLE);
-                initContrastTest();
-            }
-        }
-
-
-
-        if (imageCounter < c_images.size()) {
-            cButton.setImageBitmap(c_images.get(imageCounter).getBitMap());
-            steps.setText(getString(R.string.test_fragment_optical_test_step) + " " + (imageCounter+1) + " " + getString(R.string.test_fragment_optical_test_of) + " " + c_images.size());
-            //     image.setImageBitmap(c_images.get(imageCounter).getBitMap());
-            imageCounter++;
-        }
 
         return view;
     }
 
 
+    public void nextScreen(final View view)
+    {
+        if(clickable)
+            nextButton.performClick();
+    }
+
+    public void correct(final View view)
+    {
+        if(clickable)
+            nextButton.performClick();
+    }
+
     public void pressedC(final View view) {
 
         if(clickable) {
 
-            Log.d("CCCCC", "moires:: " + c_images.get(imageCounter - 1).getRotation());
 
-            switch (view.getId()) {
-                case R.id.downleft:
-                    Log.d("choice", "downleft");
-                    if (c_images.get(imageCounter - 1).getRotation() == 135) {
-                        Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                    } else {
-                        errors++;
-                    }
-                    break;
-                case R.id.downmiddle:
-                    Log.d("choice", "downmiddle");
-                    if (c_images.get(imageCounter - 1).getRotation() == 90) {
-                        Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                    } else {
-                        errors++;
-                    }
-                    break;
-                case R.id.downright:
-                    Log.d("choice", "downright");
-                    if (c_images.get(imageCounter - 1).getRotation() == 45) {
-                        Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                    } else {
-                        errors++;
-                    }
-                    break;
-                case R.id.middleleft:
-                    Log.d("choice", "middleleft");
-                    if (c_images.get(imageCounter - 1).getRotation() == 180) {
-                        Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                    } else {
-                        errors++;
-                    }
-                    break;
-                case R.id.middleright:
-                    Log.d("choice", "middleright");
-                    if (c_images.get(imageCounter - 1).getRotation() == 0) {
-                        Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                    } else {
-                        errors++;
-                    }
-                    break;
-                case R.id.upleft:
-                    Log.d("choice", "upleft");
-                    if (c_images.get(imageCounter - 1).getRotation() == 225) {
-                        Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                    } else {
-                        errors++;
-                    }
-                    break;
-                case R.id.upmiddle:
-                    Log.d("choice", "upmiddle");
-                    if (c_images.get(imageCounter - 1).getRotation() == 270) {
-                        Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                    } else {
-                        errors++;
-                    }
-                    break;
-                case R.id.upright:
-                    Log.d("choice", "upright");
-                    if (c_images.get(imageCounter - 1).getRotation() == 315) {
-                        Log.d("choice", "User gets: " + c_images.get(imageCounter - 1).getScore());
-                    } else {
-                        errors++;
-                    }
-                    break;
-            }
-
-            Log.d("errors", "Total errors are: " + errors);
-
-            if (imageCounter < c_images.size()) {
-                ImageView image = (ImageView) getActivity().findViewById(R.id.c);
-                cButton.setImageBitmap(c_images.get(imageCounter).getBitMap());
-                steps.setText(getString(R.string.test_fragment_optical_test_step) + " " + (imageCounter + 1) + " " + getString(R.string.test_fragment_optical_test_of) + " " + c_images.size());
-
-                imageCounter++;
-            }
         }
 
     }

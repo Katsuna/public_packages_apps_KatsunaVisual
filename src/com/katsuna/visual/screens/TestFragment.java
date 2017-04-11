@@ -1,5 +1,6 @@
 package com.katsuna.visual.screens;
 
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -271,7 +272,8 @@ public class TestFragment extends BaseFragment {
             Dialogs.ShowFinishTestDialog(getActivity(),getString(R.string.finish_alert_title), getString(R.string.finish_alert_message), getString(R.string.finish_alert_button), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    getFragmentManager().popBackStack();
+                    Fragment menu = getFragmentManager().findFragmentByTag(MenuFragment.NAME);
+                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, menu, MenuFragment.NAME).addToBackStack(MenuFragment.NAME).commit();
                 }
 
             }, false);

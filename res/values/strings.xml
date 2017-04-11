@@ -58,6 +58,19 @@
     <string name="instructions_fragment_instructions_arrow_button_text">Press arrow button to continue</string>
 
 
+    <!-- Instructions Test Layout -->
+    <string name="instructions_fragment_instructions_test_title">The Big Letter C at the center rotates and changes size. Press arrow button to continue. </string>
+    <string name="instructions_fragment_instructions_test_title_2">The Big Letter C can rotate in 8 positions similar to the 8 Letter - C buttons at the bottom of the screen. </string>
+    <string name="instructions_fragment_instructions_test_title_3">The Big Letter C changed size and rotates in a position that correspond to the upper right Letter - C button </string>
+    <string name="instructions_fragment_instructions_test_title_4">Press the Letter - C button that correspond to the orientation of The Big Letter C </string>
+    <string name="instructions_fragment_instructions_test_title_5">Press yellow button to try an example before the Test</string>
+    <string name="instructions_fragment_instructions_test_title_6">Press the Letter - C button that correspond to the orientation of The Big Letter C </string>
+    <string name="instructions_fragment_instructions_test_title_7">Correct !</string>
+    <string name="instructions_fragment_instructions_test_title_8">Now press yellow button to take the Test.</string>
+
+
+
+
 
     <!-- Distance alert layout -->
     <string name="distance_alert_title">Please keep the screen at a distance of around 40 cm </string>
