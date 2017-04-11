@@ -25,6 +25,7 @@ import com.katsuna.visual.R;
 import com.katsuna.visual.core.MainActivity;
 import com.katsuna.visual.measurement.Acuity;
 import com.katsuna.visual.measurement.C_image;
+import com.katsuna.visual.preferences.PreferencesProvider;
 import com.katsuna.visual.utils.Dialogs;
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class TestFragment extends BaseFragment {
     private static FloatingActionButton cButton, distanceButton;
     ArrayList<C_image> c_images;
     private TextView title;
+    private int testId;
 
     public TestFragment() {
     }
@@ -155,7 +157,7 @@ public class TestFragment extends BaseFragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            int testId = bundle.getInt("testId");
+            testId = bundle.getInt("testId");
             if(testId == 0)
             {
                 MainActivity activity = (MainActivity) getActivity();
@@ -272,6 +274,15 @@ public class TestFragment extends BaseFragment {
             Dialogs.ShowFinishTestDialog(getActivity(),getString(R.string.finish_alert_title), getString(R.string.finish_alert_message), getString(R.string.finish_alert_button), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    if(testId == 0)
+                    {
+                        PreferencesProvider.SetFinishAcuityTest(getActivity(),true);
+                    }
+                    else if(testId == 1)
+                    {
+                        PreferencesProvider.SetFinishContrastTest(getActivity(),true);
+
+                    }
                     Fragment menu = getFragmentManager().findFragmentByTag(MenuFragment.NAME);
                     getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, menu, MenuFragment.NAME).addToBackStack(MenuFragment.NAME).commit();
                 }
