@@ -50,6 +50,14 @@
     <string name="test_fragment_optical_test_step">Step </string>
     <string name="test_fragment_optical_test_of">of </string>
 
+    <!-- Instructions Layout -->
+
+    <string name="instructions_fragment_instructions_title">Place the phone around 40 cm from your eyes. </string>
+    <string name="instructions_fragment_instructions_title2">A black button will appear when the distance is correct. </string>
+    <string name="instructions_fragment_instructions_center_text">During test black button will be at the upper right side of the screenhelping you maintain the 40cm distance. </string>
+    <string name="instructions_fragment_instructions_arrow_button_text">Press arrow button to continue</string>
+
+
 
     <!-- Distance alert layout -->
     <string name="distance_alert_title">Please keep the screen at a distance of around 40 cm </string>
@@ -59,11 +67,6 @@
     <string name="finish_alert_title">Well done!</string>
     <string name="finish_alert_message">You have completed the test. Press the finish button to continue.</string>
     <string name="finish_alert_button">FINISH</string>
-
-
-
-
-
 
 
     <!-- TODO: Remove or change this placeholder text -->

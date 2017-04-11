@@ -47,6 +47,7 @@ import com.katsuna.visual.R;
 import com.katsuna.visual.messages.MeasurementStepMessage;
 import com.katsuna.visual.messages.MessageHUB;
 import com.katsuna.visual.messages.MessageListener;
+import com.katsuna.visual.screens.InstructionsFragment;
 import com.katsuna.visual.screens.MenuFragment;
 import com.katsuna.visual.screens.TestFragment;
 import com.katsuna.visual.utils.Dialogs;
@@ -799,6 +800,11 @@ public class MainActivity extends BaseActivity implements MessageListener {
                 dialog.dismiss();
                 dialog = null;
             }
+        }
+
+        if(curFragment != null && curFragment instanceof InstructionsFragment)
+        {
+            InstructionsFragment.setDistanceText(_decimalFormater.format(message.getDistToFace()) + " cm");
         }
 
 

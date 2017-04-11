@@ -30,6 +30,7 @@ import com.katsuna.visual.BaseFragment;
 import com.katsuna.visual.R;
 import com.katsuna.visual.measurement.Acuity;
 import com.katsuna.visual.measurement.C_image;
+import com.katsuna.visual.preferences.PreferencesProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,12 +115,23 @@ public class MenuFragment extends BaseFragment {
                         okButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Bundle bundle = new Bundle();
-                                bundle.putInt("testId", 0);
-                                TestFragment fragment = new TestFragment();
-                                fragment.setArguments(bundle);
-                                getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+                                if(PreferencesProvider.FinishAcuityTest(getActivity())) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt("testId", 0);
+                                    TestFragment fragment = new TestFragment();
+                                    fragment.setArguments(bundle);
+                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
 
+                                }
+                                else
+                                {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt("testId", 0);
+                                    InstructionsFragment fragment = new InstructionsFragment();
+                                    fragment.setArguments(bundle);
+                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+
+                                }
                             }
                         });
                         cancelButton.setOnClickListener(new View.OnClickListener() {
