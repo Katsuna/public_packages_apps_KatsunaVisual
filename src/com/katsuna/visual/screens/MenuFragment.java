@@ -129,7 +129,7 @@ public class MenuFragment extends BaseFragment {
                                     bundle.putInt("testId", 0);
                                     InstructionsFragment fragment = new InstructionsFragment();
                                     fragment.setArguments(bundle);
-                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, InstructionsFragment.NAME).addToBackStack(InstructionsFragment.NAME).commit();
 
                                 }
                             }
@@ -154,12 +154,24 @@ public class MenuFragment extends BaseFragment {
                         okButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Bundle bundle = new Bundle();
-                                bundle.putInt("testId", 1);
-                                TestFragment fragment = new TestFragment();
-                                fragment.setArguments(bundle);
-                                getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
 
+
+                                if(PreferencesProvider.FinishContrastTest(getActivity())) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt("testId", 1);
+                                    TestFragment fragment = new TestFragment();
+                                    fragment.setArguments(bundle);
+                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+                                }
+                                else {
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putInt("testId", 1);
+                                    TestInstructionsFragment fragment = new TestInstructionsFragment();
+                                    fragment.setArguments(bundle);
+                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestInstructionsFragment.NAME).addToBackStack(TestInstructionsFragment.NAME).commit();
+
+                                }
                             }
                         });
 

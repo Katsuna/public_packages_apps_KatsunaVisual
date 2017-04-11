@@ -83,7 +83,7 @@ public class InstructionsFragment extends BaseFragment {
                     case 3:
                         Bundle bundle = new Bundle();
                         bundle.putInt("testId", id_test);
-                        TestFragment fragment = new TestFragment();
+                        TestInstructionsFragment fragment = new TestInstructionsFragment();
                         fragment.setArguments(bundle);
                         getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
                         break;

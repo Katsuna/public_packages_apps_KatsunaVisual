@@ -28,7 +28,6 @@
                     android:id="@+id/instructions_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:text="@string/instructions_fragment_instructions_title"
                     android:textSize="20sp"
@@ -43,7 +42,7 @@
                     android:src="@drawable/ic_done"
                     app:backgroundTint="@android:color/black"
                     android:gravity="right"
-                    android:visibility="invisible"
+                    android:visibility="gone"
 
                     android:clickable="false"
                     />
@@ -68,6 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="test"
                 android:textSize="20sp"
                 android:gravity="center"
                 android:textColor="@android:color/black" />
@@ -80,7 +80,6 @@
                 app:backgroundTint="@android:color/black"
                 android:gravity="right"
                 android:visibility="gone"
-
                 android:clickable="false"
                 />
 
