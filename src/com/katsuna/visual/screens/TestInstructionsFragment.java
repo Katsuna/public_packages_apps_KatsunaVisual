@@ -112,7 +112,7 @@ public class TestInstructionsFragment extends BaseFragment {
             int testId = bundle.getInt("testId");
             if (testId == 0) {
 
-                title.setText(getString(R.string.instructions_fragment_instructions_title));
+                title.setText(getString(R.string.instructions_fragment_instructions_test_title));
                 nextButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -210,7 +210,125 @@ public class TestInstructionsFragment extends BaseFragment {
                 });
             } else {
 
+                title.setText(getString(R.string.instructions_fragment_instructions_contrast_test_title));
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int rotation;
+                        Bitmap bMap;
+                        Bitmap bMapScaled;
+                        C_image c_image;
+                        downRight.setClickable(false);
+                        upRight.setClickable(false);
+
+
+                        switch (currentStep) {
+                            case 1:
+                                rotation = -45;
+                                bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+                                bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
+                                bMapScaled = RotateBitmap(bMapScaled, rotation);
+                                c_image = new C_image(bMapScaled, rotation, logMAR);
+                                cButton.setImageBitmap(c_image.getBitMap());
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_2));
+                                currentStep++;
+                                break;
+                            case 2:
+                                rotation = -45;
+                                bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+                                bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
+                                bMapScaled = RotateBitmap(bMapScaled, rotation);
+                                bMapScaled = adjustedContrast(bMapScaled, -0.52);
+                                c_image = new C_image(bMapScaled, rotation, logMAR);
+                                cButton.setImageBitmap(c_image.getBitMap());
+                                upLeft.setAlpha(0.5f);
+                                upMiddle.setAlpha(0.5f);
+                                middleLeft.setAlpha(0.5f);
+                                middleRight.setAlpha(0.5f);
+                                downLeft.setAlpha(0.5f);
+                                downMiddle.setAlpha(0.5f);
+                                downRight.setAlpha(0.5f);
+
+
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_3));
+                                currentStep++;
+                                break;
+                            case 3 :
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_4));
+                                clickable = true;
+                                nextButton.setClickable(false);
+                                upRight.setClickable(true);
+                                currentStep++;
+                                break;
+                            case 4:
+                                nextButton.setClickable(true);
+                                upRight.setClickable(false);
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_5));
+                                upLeft.setAlpha(1f);
+                                upMiddle.setAlpha(1f);
+                                middleLeft.setAlpha(1f);
+                                middleRight.setAlpha(1f);
+                                downLeft.setAlpha(1f);
+                                downMiddle.setAlpha(1f);
+                                downRight.setAlpha(1f);
+                                rotation = 0;
+                                bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+                                bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
+                                bMapScaled = RotateBitmap(bMapScaled, rotation);
+                                c_image = new C_image(bMapScaled, rotation, logMAR);
+                                cButton.setImageBitmap(c_image.getBitMap());
+                                nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+                                currentStep++;
+                                break;
+                            case 5:
+                                rotation = 45;
+                                bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+                                bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
+                                bMapScaled = RotateBitmap(bMapScaled, rotation);
+                                bMapScaled = adjustedContrast(bMapScaled, -0.52);
+                                c_image = new C_image(bMapScaled, rotation, logMAR);
+                                cButton.setImageBitmap(c_image.getBitMap());
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_6));
+                                nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+                                nextButton.setClickable(false);
+                                downRight.setClickable(true);
+                                currentStep++;
+                                break;
+                            case 6:
+                                rotation = 45;
+                                bMap = BitmapFactory.decodeResource(getResources(), R.drawable.c);
+                                bMapScaled = Bitmap.createScaledBitmap(bMap, 128, 128, true);
+                                bMapScaled = RotateBitmap(bMapScaled, rotation);
+                                c_image = new C_image(bMapScaled, rotation, logMAR);
+                                cButton.setImageBitmap(c_image.getBitMap());
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_7));
+                                nextButton.setClickable(true);
+                                currentStep++;
+                                break;
+                            case 7:
+                                title.setText(getString(R.string.instructions_fragment_instructions_test_title_8));
+                                currentStep++;
+                                nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.YELLOW));
+                                break;
+                            case 8:
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("testId", 1);
+                                TestFragment fragment = new TestFragment();
+                                fragment.setArguments(bundle);
+                                getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+                                break;
+
+
+
+
+
+
+                        }
+                    }
+                });
             }
+
+
         }
 
         upLeft.setOnClickListener(new View.OnClickListener() {
@@ -219,8 +337,6 @@ public class TestInstructionsFragment extends BaseFragment {
                 pressedC(view);
             }
         });
-
-
 
         upMiddle.setOnClickListener(new View.OnClickListener() {
             @Override
