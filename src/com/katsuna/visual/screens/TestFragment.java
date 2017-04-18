@@ -26,6 +26,7 @@ import com.katsuna.visual.core.MainActivity;
 import com.katsuna.visual.measurement.Acuity;
 import com.katsuna.visual.measurement.C_image;
 import com.katsuna.visual.preferences.PreferencesProvider;
+import com.katsuna.visual.sqlite.VisualTestResultsDAO;
 import com.katsuna.visual.utils.Dialogs;
 
 import java.util.ArrayList;
@@ -276,6 +277,17 @@ public class TestFragment extends BaseFragment {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     if(testId == 0)
                     {
+                        VisualTestResultsDAO visualTestResultsDAO = new VisualTestResultsDAO(getContext());
+
+                        if(PreferencesProvider.FinishAcuityTest(getActivity()))
+                        {
+                            visualTestResultsDAO.update(testId, "2");
+                        }
+                        else
+                        {
+                            visualTestResultsDAO.insert(testId, "1");
+
+                        }
                         PreferencesProvider.SetFinishAcuityTest(getActivity(),true);
                     }
                     else if(testId == 1)
