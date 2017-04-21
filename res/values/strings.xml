@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--     Button / Field names -->
+    <!-- Button / Field names -->
     <string name="app_name">Katsuna Visual</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
@@ -20,7 +20,7 @@
     <string name="showMiddlePoint">Middle eye point</string>
     <string name="showEyePoints">Eye points</string>
 
-    <!-- 	Start Page -->
+    <!-- Start Page -->
     <string name="ProbantName">Probant Name:</string>
     <string name="CamResolution">Camera Resolution</string>
     <string name="AverageMeasurementNum">Avg. Meas. Num.</string>
@@ -28,10 +28,10 @@
     <string name="StartMeasurement">Start Measurement</string>
     <string name="fillIn">Fill out !</string>
 
-    <!-- 	Image desctriptions -->
+    <!-- Image descriptions -->
     <string name="processedFrameDesctiption">Last processed frame</string>
 
-    <!-- 	Colors -->
+    <!-- Colors -->
     <color name="white">#FFFFFF</color>
     <color name="red">#FF0000</color>
     <color name="green">#00FF00</color>
@@ -51,15 +51,12 @@
     <string name="test_fragment_optical_test_of">of </string>
 
     <!-- Instructions Layout -->
-
     <string name="instructions_fragment_instructions_title">Place the phone around 40 cm from your eyes. </string>
     <string name="instructions_fragment_instructions_title2">A black button will appear when the distance is correct. </string>
     <string name="instructions_fragment_instructions_center_text">During test black button will be at the upper right side of the screenhelping you maintain the 40cm distance. </string>
     <string name="instructions_fragment_instructions_arrow_button_text">Press arrow button to continue</string>
 
-
     <!-- Instructions Test Layout -->
-
     <string name="instructions_fragment_instructions_test_title">The Big Letter C at the center rotates and changes size. Press arrow button to continue. </string>
     <string name="instructions_fragment_instructions_test_title_2">The Big Letter C can rotate in 8 positions similar to the 8 Letter - C buttons at the bottom of the screen. </string>
     <string name="instructions_fragment_instructions_test_title_3">The Big Letter C changed size and rotates in a position that correspond to the upper right Letter - C button </string>
@@ -79,21 +76,16 @@
     <string name="instructions_fragment_instructions_contrast_test_title_8">Now press yellow button to take the Test.</string>
 
 
-
-
-
     <!-- Distance alert layout -->
     <string name="distance_alert_title">Please keep the screen at a distance of around 40 cm </string>
 
     <!-- Finish alert layout -->
-
     <string name="finish_alert_title">Well done!</string>
     <string name="finish_alert_message">You have completed the test. Press the finish button to continue.</string>
     <string name="finish_alert_button">FINISH</string>
 
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="test">test</string>
 
 </resources>
