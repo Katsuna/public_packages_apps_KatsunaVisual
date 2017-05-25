@@ -32,7 +32,7 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
     /**
      * Represents the standard height of a peace of a4 paper e.g. 29.7cm
      */
-    public static final int CALIBRATION_DISTANCE_A4_MM = 294;
+    public static final int CALIBRATION_DISTANCE_A4_MM = 344;
 
     public static final int CALIBRATION_MEASUREMENTS = 10;
 
@@ -94,6 +94,7 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
 
         if (mCamera != null) {
             requestLayout();
+
 
             Camera.Parameters params = mCamera.getParameters();
             camera.setDisplayOrientation(90);
@@ -374,9 +375,21 @@ public class CameraSurfaceView extends SurfaceView implements Callback,
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
             mCamera.setPreviewCallback(this);
+            startFaceDetection();
 
         } catch (Exception e) {
             Log.d("This", "Error starting camera preview: " + e.getMessage());
         }
     }
+    public void startFaceDetection(){
+        // Try starting Face Detection
+        Camera.Parameters params = mCamera.getParameters();
+
+        // start face detection only *after* preview has started
+        if (params.getMaxNumDetectedFaces() > 0){
+            // camera supports face detection, so can start it:
+            mCamera.startFaceDetection();
+        }
+    }
+
 }

@@ -550,7 +550,9 @@ public class MainActivity extends BaseActivity implements MessageListener {
                     / (double) this.getResources().getDisplayMetrics().heightPixels;
 
             Size bestSize = pSize.get(0);
-            double bestRation = (double) bestSize.width / (double) bestSize.height;
+          //  double bestRation = (double) bestSize.width / (double) bestSize.height;
+
+            double bestRation = (double) 400 / (double) 300;
 
             for (Size size : pSize) {
                 double sizeRatio = (double) size.width / (double) size.height;
@@ -564,7 +566,7 @@ public class MainActivity extends BaseActivity implements MessageListener {
             _cameraHeight = bestSize.height;
             _cameraWidth = bestSize.width;
 
-     //       Log.d("PInfo", _cameraWidth + " x " + _cameraHeight);
+            Log.d("PInfo", _cameraWidth + " x " + _cameraHeight);
 
             param.setPreviewSize(_cameraWidth, _cameraHeight);
             _cam.setParameters(param);
@@ -882,7 +884,12 @@ public class MainActivity extends BaseActivity implements MessageListener {
         switch (messageID) {
 
             case MessageHUB.MEASUREMENT_STEP:
-                updateUI((MeasurementStepMessage) message);
+
+                MeasurementStepMessage message1 = (MeasurementStepMessage) message;
+             //   System.out.println("confidence: " + message1.getConfidence() +"distance: "+ message1.getDistToFace());
+
+                if(message1.getConfidence() >= 0.51 && message1.getDistToFace() >= 15.0)
+                    updateUI(message1);
                 break;
 
             case MessageHUB.DONE_CALIBRATION:
