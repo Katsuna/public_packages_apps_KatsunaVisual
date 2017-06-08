@@ -796,13 +796,14 @@ public class MainActivity extends BaseActivity implements MessageListener {
 //                    .getDistToFace()) < -5)) {
 
             if (((dist - message
-                    .getDistToFace()) >= 0) ) {
+                    .getDistToFace()) >= 0 || ((dist - message
+                    .getDistToFace()) < -10)) ) {
 
 //                Log.d("distance", _decimalFormater.format(message
 //                        .getDistToFace()) + " cm");
 
                 if (dialog == null) {
-                    dialog = Dialogs.ShowAlertDialog(this, getString(R.string.distance_alert_title), _decimalFormater.format(message.getDistToFace()), false);
+                    dialog = Dialogs.ShowAlertDialog(this, getString(R.string.distance_alert_title), _decimalFormater.format(message.getDistToFace()), true);
                     TestFragment.getDistanceButton().setVisibility(View.INVISIBLE);
                 }
                     else {
