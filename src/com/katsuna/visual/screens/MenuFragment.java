@@ -103,90 +103,129 @@ public class MenuFragment extends BaseFragment {
                 switch (position)
                 {
                     case 0:
-                        okButton = (Button) view.findViewById(R.id.okButton);
-                        cancelButton = (Button) view.findViewById(R.id.cancelButton);
 
-                        listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, listView.getHeight() + okButton.getMinHeight()));
-                        listView.requestLayout();
-                        okButton.setVisibility(View.VISIBLE);
-                        cancelButton.setVisibility(View.VISIBLE);
-                        final Button finalCancelButton = cancelButton;
-                        final Button finalOkButton = okButton;
-                        okButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if(PreferencesProvider.FinishAcuityTest(getActivity())) {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putInt("testId", 0);
-                                    TestFragment fragment = new TestFragment();
-                                    fragment.setArguments(bundle);
-                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+                        if(PreferencesProvider.FinishAcuityTest(getActivity())) {
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("testId", 0);
+                            TestFragment fragment = new TestFragment();
+                            fragment.setArguments(bundle);
+                            getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
 
-                                }
-                                else
-                                {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putInt("testId", 0);
-                                    InstructionsFragment fragment = new InstructionsFragment();
-                                    fragment.setArguments(bundle);
-                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, InstructionsFragment.NAME).addToBackStack(InstructionsFragment.NAME).commit();
+                        }
+                        else
+                        {
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("testId", 0);
+                            InstructionsFragment fragment = new InstructionsFragment();
+                            fragment.setArguments(bundle);
+                            getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, InstructionsFragment.NAME).addToBackStack(InstructionsFragment.NAME).commit();
 
-                                }
-                            }
-                        });
-                        cancelButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                finalCancelButton.setVisibility(View.GONE);
-                                finalOkButton.setVisibility(View.GONE);
-                            }
-                        });
+                        }
+
+
+//                        okButton = (Button) view.findViewById(R.id.okButton);
+//                        cancelButton = (Button) view.findViewById(R.id.cancelButton);
+//
+//                        listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, listView.getHeight() + okButton.getMinHeight()));
+//                        listView.requestLayout();
+//                        okButton.setVisibility(View.VISIBLE);
+//                        cancelButton.setVisibility(View.VISIBLE);
+//                        final Button finalCancelButton = cancelButton;
+//                        final Button finalOkButton = okButton;
+//                        okButton.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                if(PreferencesProvider.FinishAcuityTest(getActivity())) {
+//                                    Bundle bundle = new Bundle();
+//                                    bundle.putInt("testId", 0);
+//                                    TestFragment fragment = new TestFragment();
+//                                    fragment.setArguments(bundle);
+//                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+//
+//                                }
+//                                else
+//                                {
+//                                    Bundle bundle = new Bundle();
+//                                    bundle.putInt("testId", 0);
+//                                    InstructionsFragment fragment = new InstructionsFragment();
+//                                    fragment.setArguments(bundle);
+//                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, InstructionsFragment.NAME).addToBackStack(InstructionsFragment.NAME).commit();
+//
+//                                }
+//                            }
+//                        });
+//                        cancelButton.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                finalCancelButton.setVisibility(View.GONE);
+//                                finalOkButton.setVisibility(View.GONE);
+//                            }
+//                        });
 
                         break;
 
 
                     case 1:
-                        okButton = (Button) view.findViewById(R.id.okButton);
-                        cancelButton = (Button) view.findViewById(R.id.cancelButton);
-                        listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, listView.getHeight() + okButton.getMinHeight()));
-                        listView.requestLayout();
 
-                        okButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                        if(PreferencesProvider.FinishContrastTest(getActivity())) {
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("testId", 1);
+                            TestFragment fragment = new TestFragment();
+                            fragment.setArguments(bundle);
+                            getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+                        }
+                        else {
+
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("testId", 1);
+                            TestInstructionsFragment fragment = new TestInstructionsFragment();
+                            fragment.setArguments(bundle);
+                            getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestInstructionsFragment.NAME).addToBackStack(TestInstructionsFragment.NAME).commit();
+
+                        }
 
 
-                                if(PreferencesProvider.FinishContrastTest(getActivity())) {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putInt("testId", 1);
-                                    TestFragment fragment = new TestFragment();
-                                    fragment.setArguments(bundle);
-                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
-                                }
-                                else {
-
-                                    Bundle bundle = new Bundle();
-                                    bundle.putInt("testId", 1);
-                                    TestInstructionsFragment fragment = new TestInstructionsFragment();
-                                    fragment.setArguments(bundle);
-                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestInstructionsFragment.NAME).addToBackStack(TestInstructionsFragment.NAME).commit();
-
-                                }
-                            }
-                        });
-
-                        final Button finalCancelButton1 = cancelButton;
-                        final Button finalOkButton1 = okButton;
-                        cancelButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                finalCancelButton1.setVisibility(View.GONE);
-                                finalOkButton1.setVisibility(View.GONE);
-                            }
-                        });
-
-                        okButton.setVisibility(View.VISIBLE);
-                        cancelButton.setVisibility(View.VISIBLE);
+//                        okButton = (Button) view.findViewById(R.id.okButton);
+//                        cancelButton = (Button) view.findViewById(R.id.cancelButton);
+//                        listView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, listView.getHeight() + okButton.getMinHeight()));
+//                        listView.requestLayout();
+//
+//                        okButton.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//
+//
+//                                if(PreferencesProvider.FinishContrastTest(getActivity())) {
+//                                    Bundle bundle = new Bundle();
+//                                    bundle.putInt("testId", 1);
+//                                    TestFragment fragment = new TestFragment();
+//                                    fragment.setArguments(bundle);
+//                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestFragment.NAME).addToBackStack(TestFragment.NAME).commit();
+//                                }
+//                                else {
+//
+//                                    Bundle bundle = new Bundle();
+//                                    bundle.putInt("testId", 1);
+//                                    TestInstructionsFragment fragment = new TestInstructionsFragment();
+//                                    fragment.setArguments(bundle);
+//                                    getFragmentManager().beginTransaction().replace(R.id.main_activity_fragment_container, fragment, TestInstructionsFragment.NAME).addToBackStack(TestInstructionsFragment.NAME).commit();
+//
+//                                }
+//                            }
+//                        });
+//
+//                        final Button finalCancelButton1 = cancelButton;
+//                        final Button finalOkButton1 = okButton;
+//                        cancelButton.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View view) {
+//                                finalCancelButton1.setVisibility(View.GONE);
+//                                finalOkButton1.setVisibility(View.GONE);
+//                            }
+//                        });
+//
+//                        okButton.setVisibility(View.VISIBLE);
+//                        cancelButton.setVisibility(View.VISIBLE);
                         break;
                 }
             }
